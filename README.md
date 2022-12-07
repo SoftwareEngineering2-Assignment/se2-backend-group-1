@@ -21,4 +21,3 @@ $ npm run dev
 ```bash.
 $ npm start
 ```
-1
