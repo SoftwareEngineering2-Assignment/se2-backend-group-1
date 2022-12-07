@@ -3,19 +3,14 @@ name: test
        
 on: [push, pull_request]
 
-
 jobs:
-  test:
-        
+  test: 
     env:
-      PORT: 3001
-      SERVER_SECRET: ${{ secrets.SERVER_SECRET}}
-      MONGODB_URI: ${{ secrets.MONGODB_URI}}
-      PLATFORM_URI: http://localhost:3002
-      SERVER_URI: http://localhost:3000
-      SERVER_EMAIL: karanikio@auth.gr
-      SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY}}
-  
+      port: ${{ secrets.SSH_PORT }}
+      username: ${{ secrets.SSH_USERNAME}}
+      password: ${{ secrets.SSH_PASSWORD}}
+      host: ${{ secrets.SSH_HOST}}
+      
     runs-on: ubuntu-latest
     steps:
       # Checkouts out of the repo
@@ -28,8 +23,6 @@ jobs:
       - name: Run test
         run: npm test
  
-
-
     # Similar to npm install, but with some differences 
 #     - name: Install dependencies
 #       run: npm ci
