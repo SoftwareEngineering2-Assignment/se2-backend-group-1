@@ -1,5 +1,5 @@
 /* eslint-disable import/no-unresolved */
-
+require('dotenv').config();
 
 const http = require('node:http');
 const test = require('ava').default;
@@ -8,9 +8,6 @@ const listen = require('test-listen');
 
 const app = require('../src/index');
 const {jwtSign} = require('../src/utilities/authentication/helpers');
-
-// Access app 
-require('dotenv').config(app.env);
 
 
 test.before(async (t) => {
@@ -23,15 +20,15 @@ test.after.always((t) => {
   t.context.server.close();
 });
 
-test('GET /statistics returns correct response and status code', async (t) => {
-  const { body, statusCode } = await t.context.got('general/statistics');
-  t.is(body.sources, 0);
-  t.assert(body.success);
-  t.is(statusCode, 200);
-});
+// test('GET /statistics returns correct response and status code', async (t) => {
+//   const { body, statusCode } = await t.context.got('general/statistics');
+//   t.is(body.sources, 0);
+//   t.assert(body.success);
+//   t.is(statusCode, 200);
+// });
 
-test('GET /sources returns correct response and status code', async (t) => {
-  const token = jwtSign({id: 1});
-  const {statusCode} = await t.context.got(`sources/sources?token=${token}`);
-  t.is(statusCode, 200);
-});
+// test('GET /sources returns correct response and status code', async (t) => {
+//   const token = jwtSign({id: 1});
+//   const {statusCode} = await t.context.got(`sources/sources?token=${token}`);
+//   t.is(statusCode, 200);
+// });
