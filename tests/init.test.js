@@ -1,5 +1,5 @@
 /* eslint-disable import/no-unresolved */
-// require('dotenv').config();
+require('dotenv').config(app.env);
 
 const http = require('node:http');
 const test = require('ava').default;
