@@ -6,29 +6,31 @@ on: [push, pull_request]
 
 jobs:
   test:
+        
     env:
       PORT: 3001
-      SERVER_SECRET: ${{ secrets.SERVER_SECRET }}
-      MONGODB_URI: ${{ secrets.MONGODB_URI }}
-      PLATFORM_URI: 'http://localhost:3002'
-      SERVER_URI: 'http://localhost:3000'
-      SERVER_EMAIL: 'karanikio@auth.gr'
-      SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
-        
+      SERVER_SECRET: ${{ secrets.SERVER_SECRET}}
+      MONGODB_URI: ${{ secrets.MONGODB_URI}}
+      PLATFORM_URI: http://localhost:3002
+      SERVER_URI: http://localhost:3000
+      SERVER_EMAIL: karanikio@auth.gr
+      SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY}}
+  
     runs-on: ubuntu-latest
     steps:
+      # Checkouts out of the repo
+      - name: Checkout repo
+        uses: actions/checkout@v3
+      # Install the dependencies  
+      - name: Install dependencies
+        run: npm install
+      # Runs the tests if they exist
+      - name: Run test
+        run: npm test
+ 
 
-    # Checkouts out of the repo
-    - name: Checkout repo
-      uses: actions/checkout@v3
-
-    - name: Install dependencies
-      run: npm install
 
     # Similar to npm install, but with some differences 
 #     - name: Install dependencies
 #       run: npm ci
       
-    # Runs the tests if they exist
-    - name: Run test
-      run: npm test --if-present
