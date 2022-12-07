@@ -6,10 +6,13 @@ on: [push, pull_request]
 jobs:
   test: 
     env:
-      port: ${{ secrets.SSH_PORT }}
-      username: ${{ secrets.SSH_USERNAME}}
-      password: ${{ secrets.SSH_PASSWORD}}
-      host: ${{ secrets.SSH_HOST}}
+      PORT: ${{ secrets.SSH_PORT }}
+      SERVER_SECRET: ${{ secrets.SERVER_SECRET }}
+      MONGODB_URI: ${{ secrets.MONGODB_URI }}
+      PLATFORM_URI: ${{ secrets.PLATFORM_URI }}
+      SERVER_URI:  ${{ secrets.SERVER_URI }}
+      SERVER_EMAIL: ${{ secrets.SERVER_EMAIL }}
+      SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
       
     runs-on: ubuntu-latest
     steps:
