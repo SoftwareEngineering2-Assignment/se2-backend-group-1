@@ -5,17 +5,19 @@ on: [push, pull_request]
 
 jobs:
   test:
+    env:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USERNAME }}
+        password: ${{ secrets.SSH_PASSWORD }}
+        port: ${{ secrets.SSH_PORT }}
+        
     runs-on: ubuntu-latest
     steps:
 
     # Checkouts out of the repo
     - name: Checkout repo
       uses: actions/checkout@v3
-      with:
-        host: ${{ secrets.SSH_HOST }}
-        username: ${{ secrets.SSH_USERNAME }}
-        password: ${{ secrets.SSH_PASSWORD }}
-        port: ${{ secrets.SSH_PORT }}
+
     - name: Install dependencies
       run: npm install
 
