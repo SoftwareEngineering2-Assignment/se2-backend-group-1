@@ -1,0 +1,15 @@
+# This workflow will print a message, whenever a merge request is successful.
+name: pull_request
+       
+on:
+  pull_request_target:
+    types:
+      - closed
+
+jobs:
+  if_merged:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo The PR was merged

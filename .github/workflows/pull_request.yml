@@ -45,7 +45,7 @@ jobs:
 #           VALIDATE_ALL_CODEBASE: true
 #           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
- cd: 
+  cd: 
     runs-on: ubuntu-latest
     needs: push
     # If the pull request is on main and itw accepted
