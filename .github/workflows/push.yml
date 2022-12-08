@@ -1,10 +1,11 @@
 # This workflow will do a clean installation of the dependencies and builds the source code
+# Push will only be available at the branches 
 name: push
        
 on: push
 
 jobs:
-  test: 
+  push: 
     env:
       PORT: ${{ secrets.SSH_PORT }}
       SERVER_SECRET: ${{ secrets.SERVER_SECRET }}
@@ -19,31 +20,26 @@ jobs:
       # Checkouts out of the repo
       - name: Checkout repo
         uses: actions/checkout@v3
-
+            
       # Install the dependencies  
       - name: Install dependencies
         run: npm install
 
-      # Similar to npm install, but with some differences 
-      - name: Install dependencies
-        run: npm ci
+#       # Similar to npm install, but with some differences 
+#       - name: Install dependencies
+#         run: npm ci
 
-      # # Runs the tests if they exist
+      # # Runs the tests 
       # - name: Run test
       #   run: npm test
 
-      # # Create super-Linters      
+      # # Create Linters      
       # - name: Code Linting
       #   run: npm run lint
 
-      # Create linters
-      - name: Install Liners
-        uses: github/super-linter@v4
-        env:
-          VALIDATE_ALL_CODEBASE: true
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-
-
-
-
+      # Create super-linters
+#       - name: Install Liners
+#         uses: github/super-linter@v4
+#         env:
+#           VALIDATE_ALL_CODEBASE: true
+#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
