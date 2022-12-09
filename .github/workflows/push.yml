@@ -5,7 +5,7 @@ name: push
 on: push
 
 jobs:
-  push: 
+  push_actions: 
     env:
       PORT: ${{ secrets.SSH_PORT }}
       SERVER_SECRET: ${{ secrets.SERVER_SECRET }}
