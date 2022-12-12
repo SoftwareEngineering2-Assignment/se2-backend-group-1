@@ -1,0 +1,17 @@
+# This scirpt auto-assigns the issues to one person
+name: Issue assignment
+
+on:
+    issues:
+        types: [opened]
+
+jobs:
+    auto-assign:
+        runs-on: ubuntu-latest
+        steps:
+            - name: 'Auto-assign issue'
+              uses: pozil/auto-assign-issue@v1.11.0
+              with:
+                  assignees: panospro,MarshallRNH2,konstaae
+                  # The number of assignees can change
+                  numOfAssignee: 1
