@@ -8,7 +8,7 @@ const got = require('got');
 const listen = require('test-listen');
 
 const app = require('../src/index');
-// const {jwtSign} = require('../src/utilities/authentication/helpers');
+const {jwtSign} = require('../src/utilities/authentication/helpers');
 const co_token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InBwcm90b3BzIiwiaWQiOiI2MzhkMDM1NjkzNGYxMzA2NTY3YzExNzUiLCJlbWFpbCI6InBwcm90b3BzQGVjZS5hdXRoLmdyIiwiaWF0IjoxNjcwODY1NDA5LCJleHAiOjE2NzA5MDE0MDl9.ydK3b6y00aKVi0myuXEWTgFDSECJquN4pIVB2SOnnQc'
 
 require('dotenv').config(app.env);
