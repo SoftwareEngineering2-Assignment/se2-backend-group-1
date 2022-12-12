@@ -32,9 +32,9 @@ test('GET /statistics returns correct response and status code', async (t) => {
 
 
 test('GET /sources returns correct response and status code', async (t) => {
-  const token = co_token;
+  const token = jwtSign({id: 1});
   const {statusCode} = await t.context.got(`sources/sources?token=${token}`);
-  t.is(statusCode, 403);
+  t.is(statusCode, 200);
 });
 
 // test.before(async (t) => {
