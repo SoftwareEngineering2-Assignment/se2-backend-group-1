@@ -34,7 +34,7 @@ test('GET /statistics returns correct response and status code', async (t) => {
 test('GET /sources returns correct response and status code', async (t) => {
   const token = co_token;
   const {statusCode} = await t.context.got(`sources/sources?token=${token}`);
-  t.is(statusCode, 200);
+  t.is(statusCode, 403);
 });
 
 // test.before(async (t) => {
