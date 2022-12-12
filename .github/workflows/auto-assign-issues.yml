@@ -3,7 +3,7 @@ name: Issue assignment
 
 on:
     issues:
-        types: [opened]
+        types: [opened, ready_for_review]
 
 jobs:
     auto-assign:
@@ -11,7 +11,8 @@ jobs:
         steps:
             - name: 'Auto-assign issue'
               uses: pozil/auto-assign-issue@v1.11.0
+              # - uses: kentaro-m/auto-assign-action@v1.2.2
               with:
                   assignees: panospro,MarshallRNH2,konstaae
                   # The number of assignees can change
-                  numOfAssignee: 1
+                  numOfAssignee: 1      
