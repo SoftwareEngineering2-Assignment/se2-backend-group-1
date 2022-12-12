@@ -10,7 +10,7 @@ const listen = require('test-listen');
 
 const app = require('../src/index');
 const {jwtSign} = require('../src/utilities/authentication/helpers');
-
+const co_token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InBwcm90b3BzIiwiaWQiOiI2MzhkMDM1NjkzNGYxMzA2NTY3YzExNzUiLCJlbWFpbCI6InBwcm90b3BzQGVjZS5hdXRoLmdyIiwiaWF0IjoxNjcwODY1NDA5LCJleHAiOjE2NzA5MDE0MDl9.ydK3b6y00aKVi0myuXEWTgFDSECJquN4pIVB2SOnnQc'
 
 test.before(async (t) => {
   t.context.server = http.createServer(app);
@@ -31,9 +31,9 @@ test('GET /statistics returns correct response and status code', async (t) => {
 
 
 test('GET /sources returns correct response and status code', async (t) => {
-  const token = jwtSign({id: 1});
+  const token = co_token;
   const {statusCode} = await t.context.got(`sources/sources?token=${token}`);
-  t.is(statusCode, 200);
+  t.is(statusCode, 403);
 });
 
 // test.before(async (t) => {
