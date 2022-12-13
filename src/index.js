@@ -33,7 +33,7 @@ app.use(express.static(path.join(__dirname, 'assets')));
 
 // error handler
 app.use(error);
-const {port = 3000} = process.env
+const {port = 3000} = process.env.PORT
 app.listen(port, () =>
 // eslint-disable-next-line no-console
   console.log(`NodeJS Server listening on port ${port}. \nMode: ${process.env.NODE_ENV}`));
