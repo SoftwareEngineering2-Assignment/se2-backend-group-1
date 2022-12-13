@@ -39,7 +39,7 @@ console.log(port)
 app.listen(PORT, function(err){
     if (err) console.log("Error in server setup")
     // eslint-disable-next-line no-console
-    console.log(`NodeJS Server listening on port ${port}. \nMode: ${process.env.NODE_ENV}`));
+    console.log(`NodeJS Server listening on port ${port}. \nMode: ${process.env.NODE_ENV}`);
 })
 
 module.exports = app;
