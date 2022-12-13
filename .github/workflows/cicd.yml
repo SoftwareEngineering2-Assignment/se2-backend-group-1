@@ -7,7 +7,7 @@ jobs:
   ci:
   
     env:
-      PORT: 3009
+      PORT: 3001
       SERVER_SECRET: ${{ secrets.SERVER_SECRET }}
       MONGODB_URI: ${{ secrets.MONGODB_URI }}
       PLATFORM_URI: 'http://localhost:3002'
