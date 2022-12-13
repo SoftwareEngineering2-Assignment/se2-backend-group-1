@@ -1,7 +1,5 @@
 /* eslint-disable import/no-unresolved */
 require('dotenv').config();
-// const dotenv = require('dotenv');
-// dotenv.config();
 
 const http = require('node:http');
 const test = require('ava').default;
@@ -10,7 +8,6 @@ const listen = require('test-listen');
 
 const app = require('../src/index');
 const {jwtSign} = require('../src/utilities/authentication/helpers');
-
 
 test.before(async (t) => {
   t.context.server = http.createServer(app);
@@ -23,20 +20,14 @@ test.after.always((t) => {
 });
 
 test('GET /statistics returns correct response and status code', async (t) => {
-  const { body, statusCode } = await t.context.got('general/statistics');
-  t.is(body.sources, 0);
+  const {body, statusCode} = await t.context.got('general/statistics');
+  t.is(body.sources, 1);
   t.assert(body.success);
   t.is(statusCode, 200);
 });
-
 
 test('GET /sources returns correct response and status code', async (t) => {
   const token = jwtSign({id: 1});
   const {statusCode} = await t.context.got(`sources/sources?token=${token}`);
   t.is(statusCode, 200);
 });
-
-// test.before(async (t) => {
-//   const a = 1;
-//   t.is(a + 1, 2);
-// });
