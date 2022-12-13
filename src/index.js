@@ -36,17 +36,10 @@ app.use(error);
 
 let port =  process.env.PORT || 3000 ;
 console.log(port)
-try{
-  app.listen(port, () =>
-  // eslint-disable-next-line no-console
+app.listen(PORT, function(err){
+    if (err) console.log("Error in server setup")
+    // eslint-disable-next-line no-console
     console.log(`NodeJS Server listening on port ${port}. \nMode: ${process.env.NODE_ENV}`));
-  }
-catch{
-  // If process.env.PORT isn't falsy but we have error in listening the port, then we 
-  // have to change the port and make the value to 3000
-  port = 3000
-  app.listen(port, () =>
-  // eslint-disable-next-line no-console
-    console.log(`NodeJS Server listening on port ${port}. \nMode: ${process.env.NODE_ENV}`));
-}
+})
+
 module.exports = app;
