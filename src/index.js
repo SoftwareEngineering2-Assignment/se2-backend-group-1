@@ -35,20 +35,17 @@ app.use(express.static(path.join(__dirname, 'assets')));
 app.use(error);
 
 const port = 3000 || process.env.PORT;
-app.listen(port, () =>
+try{
+  app.listen(port, () =>
   // eslint-disable-next-line no-console
     console.log(`NodeJS Server listening on port ${port}. \nMode: ${process.env.NODE_ENV}`));
-// try{
-//   app.listen(port, () =>
-//   // eslint-disable-next-line no-console
-//     console.log(`NodeJS Server listening on port ${port}. \nMode: ${process.env.NODE_ENV}`));
-//   }
-// catch(listen EACCES: permission denied 0.0.0.0:***){
-//   // If process.env.PORT isn't falsy but we have error in listening the port, then we 
-//   // have to change the port and make the value to 3000
-//   port = 3000
-//   app.listen(port, () =>
-//   // eslint-disable-next-line no-console
-//     console.log(`NodeJS Server listening on port ${port}. \nMode: ${process.env.NODE_ENV}`));
-// }
+  }
+catch{
+  // If process.env.PORT isn't falsy but we have error in listening the port, then we 
+  // have to change the port and make the value to 3000
+  port = 3000
+  app.listen(port, () =>
+  // eslint-disable-next-line no-console
+    console.log(`NodeJS Server listening on port ${port}. \nMode: ${process.env.NODE_ENV}`));
+}
 module.exports = app;
