@@ -24,6 +24,10 @@ jobs:
       # Install the dependencies  
       - name: Install dependencies
         run: npm install
+        
+      # Install enviroment 
+      - name: Install env
+        run: npm install dotenv
 
 
 #       # Similar to npm install, but with some differences 
