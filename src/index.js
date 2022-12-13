@@ -33,6 +33,9 @@ app.use(express.static(path.join(__dirname, 'assets')));
 
 // error handler
 app.use(error);
+
+// We use this form to take port 3000 if and only if there is no value on process.env.port and if the port is not listening it is working
+// probably there was a valye in process.env.PORT that was truthy but it wasn't listening.
 const {port = 3000} = process.env.PORT
 app.listen(port, () =>
 // eslint-disable-next-line no-console
