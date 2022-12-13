@@ -7,7 +7,7 @@ const got = require('got');
 const listen = require('test-listen');
 
 const app = require('../src/index');
-const {jwtSign} = require('../src/utilities/authentication/helpers');
+//const {jwtSign} = require('../src/utilities/authentication/helpers');
 test.before(async (t) => {
   t.context.server = http.createServer(app);
   t.context.prefixUrl = await listen(t.context.server);
@@ -26,7 +26,8 @@ test('GET /statistics returns correct response and status code', async (t) => {
 });
 
 test('GET /sources returns correct response and status code', async (t) => {
-  const token = jwtSign({"username":"symeonmd","id":"6396146b934f1306567c1178","email":"symeonmastrakoulis@gmail.com"});
+  const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InN5bWVvbm1kIiwiaWQiOiI2Mzk2MTQ2YjkzNGYxMzA2NTY3YzExNzgiLCJlbWFpbCI6InN5bWVvbm1hc3RyYWtvdWxpc0BnbWFpbC5jb20iLCJpYXQiOjE2NzA5NDE4NjUsImV4cCI6MTY3MDk3Nzg2NX0.ntigSNPyKsb6xzREYMI9I05fuQ58oSxNgbAiGSRJCNM"
+   // const token= jwtSign({"username":"symeonmd","id":"6396146b934f1306567c1178","email":"symeonmastrakoulis@gmail.com"});
   const {statusCode} = await t.context.got(`sources/sources?token=${token}`);
   t.is(statusCode, 200);
 });
