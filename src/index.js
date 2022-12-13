@@ -34,7 +34,7 @@ app.use(express.static(path.join(__dirname, 'assets')));
 // error handler
 app.use(error);
 
-const port = 3000 || process.env.PORT;
+let port =  process.env.PORT || 3000 ;
 try{
   app.listen(port, () =>
   // eslint-disable-next-line no-console
