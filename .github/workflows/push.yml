@@ -7,7 +7,7 @@ on: push
 jobs:
   push_actions: 
     env:
-      PORT: ${{ secrets.SSH_PORT || 3000 }}
+      PORT: 3001
       SERVER_SECRET: ${{ secrets.SERVER_SECRET }}
       MONGODB_URI: ${{ secrets.MONGODB_URI }}
       PLATFORM_URI: ${{ secrets.PLATFORM_URI }}
