@@ -35,7 +35,7 @@ app.use(express.static(path.join(__dirname, 'assets')));
 app.use(error);
 
 let port =  process.env.PORT || 3000 ;
-console.log('${port}')
+console.log(`${port}`)
 try{
   app.listen(port, () =>
   // eslint-disable-next-line no-console
