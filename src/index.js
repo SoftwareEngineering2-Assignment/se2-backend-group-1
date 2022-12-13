@@ -40,7 +40,7 @@ try{
   // eslint-disable-next-line no-console
     console.log(`NodeJS Server listening on port ${port}. \nMode: ${process.env.NODE_ENV}`));
   }
-catch(err){
+catch(listen EACCES: permission denied 0.0.0.0:***){
   // If process.env.PORT isn't falsy but we have error in listening the port, then we 
   // have to change the port and make the value to 3000
   port = 3000
