@@ -5,7 +5,7 @@ name: push
 on: push
 
 jobs:
-  push: 
+  push_actions: 
     env:
       PORT: ${{ secrets.SSH_PORT }}
       SERVER_SECRET: ${{ secrets.SERVER_SECRET }}
@@ -25,14 +25,22 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+
+<<<<<<< Updated upstream
 #       # Similar to npm install, but with some differences 
 #       - name: Install dependencies
 #         run: npm ci
 
-      # # Runs the tests 
-      # - name: Run test
-      #   run: npm test
+=======
 
+
+>>>>>>> Stashed changes
+      # Runs the tests 
+#       - name: Run test
+#         run: SERVER_SECRET="${{ secrets.SERVER_SECRET }}" npm test
+       
+#       - name: format check
+#         run: npm run format-check
       # # Create Linters      
       # - name: Code Linting
       #   run: npm run lint
