@@ -25,14 +25,17 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+
 #       # Similar to npm install, but with some differences 
 #       - name: Install dependencies
 #         run: npm ci
 
-      # # Runs the tests 
-      # - name: Run test
-      #   run: npm test
-
+      # Runs the tests 
+#       - name: Run test
+#         run: SERVER_SECRET="${{ secrets.SERVER_SECRET }}" npm test
+       
+#       - name: format check
+#         run: npm run format-check
       # # Create Linters      
       # - name: Code Linting
       #   run: npm run lint
