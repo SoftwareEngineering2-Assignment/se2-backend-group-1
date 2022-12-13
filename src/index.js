@@ -36,9 +36,8 @@ app.use(error);
 
 let port =  3000 || process.env.PORT;
 console.log(port)
-app.listen(port,()=>
+app.listen(port,()=>(
     // eslint-disable-next-line no-console
-    console.log(`NodeJS Server listening on port ${port}. \nMode: ${process.env.NODE_ENV}`);
-})
+    console.log(`NodeJS Server listening on port ${port}. \nMode: ${process.env.NODE_ENV}`);))
 
 module.exports = app;
