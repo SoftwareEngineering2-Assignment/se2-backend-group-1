@@ -34,7 +34,6 @@ app.use(express.static(path.join(__dirname, 'assets')));
 // error handler
 app.use(error);
 
-.
 const port = process.env.PORT || 3000;
 try{
   app.listen(port, () =>
