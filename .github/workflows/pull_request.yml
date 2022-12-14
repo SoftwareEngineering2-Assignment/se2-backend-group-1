@@ -8,7 +8,7 @@ on: pull_request
 jobs:
   push: 
     env:
-      PORT: ${{ secrets.SSH_PORT }}
+      PORT: 3001
       SERVER_SECRET: ${{ secrets.SERVER_SECRET }}
       MONGODB_URI: ${{ secrets.MONGODB_URI }}
       PLATFORM_URI: ${{ secrets.PLATFORM_URI }}
