@@ -1,5 +1,5 @@
 /*
-* Ιmport the file mongoose in the object mongoose.
+* Ιmport mongoose in the object mongoose.
 */
 const mongoose = require('mongoose');
 
