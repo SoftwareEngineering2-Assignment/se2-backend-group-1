@@ -4,7 +4,7 @@
 const {schemas: validationSchemas} = require('../utilities/validation');
 
 /* 
-* This middleware is used to validate the request body of an HTTP request against a specified schema before the request is passed 
+* Middleware is used to validate the request body of an HTTP request against a specified schema before the request is passed 
 * on to the next middleware or the route handler, for ensuring that the request body conforms to a certain structure or contains certain data.
 */ 
 module.exports = async (req, res, next, schema) => {

@@ -6,7 +6,7 @@
 const {pipe, has, ifElse, assoc, identity, allPass, propEq} = require('ramda');
 
 /* 
-* Function  that takes an object as an argument and returns a modified version of it:
+* Function that takes an object as an argument and returns a modified version of it:
 
 * If the status property of the object is 500 and the NODE_ENV environment variable is set to production, 
 * then the function will return a new object that is the same as the original object but with a new property called message 
@@ -29,7 +29,7 @@ const withFormatMessageForProduction = ifElse(
 );
 
 /*
-* This is an error-handling middleware function, with arguments, an error object, an req object representing the incoming HTTP request, 
+* An error-handling middleware function, with arguments, an error object, an req object representing the incoming HTTP request, 
 * a res object representing the outgoing HTTP response, and a next function that is called to pass control to the next middleware in the chain.
 */
 module.exports = (error, req, res, next) => 

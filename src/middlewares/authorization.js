@@ -33,8 +33,9 @@ const {path, ifElse, isNil, startsWith, slice, identity, pipe} = require('ramda'
 */
 const secret = process.env.SERVER_SECRET;
 
-/* This is a middleware function that checks the presence and validity of a token in a request. 
-*  It uses the pipe function to perform a series of operations on the request object, req.
+/*
+* A middleware function that checks the presence and validity of a token in a request. 
+* It uses the pipe function to perform a series of operations on the request object, req.
 */
 module.exports = (req, res, next) => {
   /**

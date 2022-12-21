@@ -6,7 +6,7 @@ const error = require('./error');
 const validation = require('./validation');
 
 /*
-* This code exports an object with three properties: authorization, error, and validation.
+* Export an object with three properties: authorization, error, and validation.
 */
 module.exports = {
   authorization,
