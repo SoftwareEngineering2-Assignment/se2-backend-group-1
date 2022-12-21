@@ -19,9 +19,8 @@ const Source = require('../models/source');
 
 /* 
 * If an error occurs during the execution of the following routes handlers, it will pass control to the next middleware with the error 
-* as an argument, for the error to be handled.*/
-
-
+* as an argument, for the error to be handled.
+*/
 
 /*
 * Handling GET requests to the '/dashboards' route with three middleware functions.
@@ -34,8 +33,6 @@ const Source = require('../models/source');
 * and views and assigns it to the dashboards variable. 
 
 * Then a JSON response is sent to the client with success set to true and the dashboards array as the value of the dashboards field.
-
-
 */
 router.get('/dashboards',
   authorization,
@@ -75,8 +72,6 @@ router.get('/dashboards',
 
 * If none is found, then creates a new dashboard and saves it to the database, with name as variable, a layout set to an empty array, 
 * items set to an empty object, nextId set to 1 and owner set to id. Then sends a JSON response to the client with success set to true.
-
-
 */  
 router.post('/create-dashboard', 
   authorization,
@@ -117,8 +112,6 @@ router.post('/create-dashboard',
 
 * If none is found, sends a JSON response to the client with a status set to 409 (Conflict) and a message indicating that 
 * the selected dashboard has not been found. 
-
-
 */
 router.post('/delete-dashboard', 
   authorization,
