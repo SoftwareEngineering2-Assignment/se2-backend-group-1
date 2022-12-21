@@ -1,13 +1,37 @@
+/*
+* Import express,mongoose and the module middlewares 
+*/
 /* eslint-disable max-len */
 const express = require('express');
 const mongoose = require('mongoose');
 const {authorization} = require('../middlewares');
 
+/*
+* Define a middleware router object. 
+*/
 const router = express.Router();
 
+/*
+* Import dashboard and source from module models 
+*/
 const Dashboard = require('../models/dashboard');
 const Source = require('../models/source');
 
+/*
+* Handling GET requests to the '/dashboards' route with three middleware functions.
+
+* The authorization middleware function is checking, if the client sending the request is authorized to access the route. 
+* There is a documentation on authorization for the posibility that the client is not authorized.
+
+* An async function, retrieves the id from the decoded of the request object req. It uses the id value to find all 
+* dashboard s in the database where the owner field matches the id value. Then create an array of objects with id, name
+* and views and assigns it to the dashboards variable. 
+
+* Then a JSON response is sent to the client with success set to true and the dashboards array as the value of the dashboards field.
+
+* If an error occurs during the execution of the route handler, it will pass control to the next middleware with the error 
+* as an argument, for the error to be handled.
+*/
 router.get('/dashboards',
   authorization,
   async (req, res, next) => {
@@ -32,6 +56,24 @@ router.get('/dashboards',
     }
   });
 
+/*
+* Handling POST requests to the '/create-dashboard' route with two middleware functions.
+
+* Use the authorization middleware.
+
+* An async function, retrieves the name and the id from the decoded of the request object req. It uses their values to find a 
+* dashboard in the database where the owner field matches their values. Then create an array of objects with id, name
+* and views and assigns it to the dashboards variable. 
+
+* If one is found, a JSON response to the client is sent with status set to 409 (conflict) and a message indicating that a dashboard
+* with that name already exists.
+
+* If none is found, then creates a new dashboard and saves it to the database, with name as variable, a layout set to an empty array, 
+* items set to an empty object, nextId set to 1 and owner set to id. Then sends a JSON response to the client with success set to true.
+
+* If an error occurs during the execution of the route handler, it will pass control to the next middleware with the error 
+* as an argument, for the error to be handled.
+*/  
 router.post('/create-dashboard', 
   authorization,
   async (req, res, next) => {
@@ -59,6 +101,22 @@ router.post('/create-dashboard',
     }
   }); 
 
+/*
+* Handling POST requests to the '/delete-dashboard' route with two middleware functions.
+
+* Use the authorization middleware.
+
+* An async function, retrieves the id from the request body and then the id from the decoded of the request object req. 
+* It uses their values to find a dashboard in the database where the owner field matches their values.
+
+* If one is found, removes the dashboard from the database and sends a JSON response to the client with success set to true.
+
+* If none is found, sends a JSON response to the client with a status set to 409 (Conflict) and a message indicating that 
+* the selected dashboard has not been found.
+
+* If an error occurs during the execution of the route handler, it will pass control to the next middleware with the error 
+* as an argument, for the error to be handled.
+*/
 router.post('/delete-dashboard', 
   authorization,
   async (req, res, next) => {
@@ -78,6 +136,20 @@ router.post('/delete-dashboard',
     }
   }); 
 
+/*
+* Handling GET requests to the '/dashboards' route with three middleware functions.
+
+* Use the authorization middleware.
+
+* Define an empty object called dashboard and assign it values of certain fields from the foundDashboard object.
+
+* Find all source documents that belong to the authenticated user and push the names of these sources into the sources array.
+
+* It sends a JSON response with success set to true, the dashboard and the sources.
+
+* If an error occurs during the execution of the route handler, it will pass control to the next middleware with the error 
+* as an argument, for the error to be handled.
+*/
 router.get('/dashboard',
   authorization,
   async (req, res, next) => {
@@ -115,6 +187,14 @@ router.get('/dashboard',
     }
   });
 
+/*
+* Handling Post requests to the '/save-dashboard' route with three middleware functions.
+
+* Use the authorization middleware.
+
+*
+
+*/
 router.post('/save-dashboard', 
   authorization,
   async (req, res, next) => {
