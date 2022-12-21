@@ -45,7 +45,7 @@ const ResetSchema = new mongoose.Schema({
 ResetSchema.plugin(beautifyUnique);
 
 /*
-* Used to pluralize the name of a collection based on the given singular name, in this case it return null, because of the argument 
+* Used to pluralize the name of a collection based on the given singular name, in this case it return null, because of the argument. 
 */
 mongoose.pluralize(null);
 

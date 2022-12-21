@@ -1,7 +1,7 @@
 /*
 * Importing mongoose and a mongoose plugin for more user-friendly validation error messages when a unique constraint is violated.
 * Also having a hashed secure password and a comparePassword function for comparing a user-provided password to a previously-hashed password,
-* from the authentication module in the utilities folder 
+* from the authentication module in the utilities folder. 
 */
 /* eslint-disable func-names */
 const mongoose = require('mongoose');
