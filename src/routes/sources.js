@@ -227,20 +227,6 @@ router.post('/source',
     }
   });
 
-/*
-* Handling POST requests to the '/check-source' route.
-
-* Use the authorization. There is a documentation on authorization for the posibility that the client is not authorized.
-
-* Check a list of body and create new sources if they don't already exist in the database.
-
-* Initialize an empty array to store any sources that need to be created. Then loop through the list in body and check if each one exists 
-* in the database. If it doesn't exist, add to the newSources array.
-
-* After the loop completes, loop through the newSources and create a new source for each item in the array using the Source model.
-
-* Return a JSON response containing the success set to true and newSources.
-*/
 router.post('/check-sources',
   authorization,
   async (req, res, next) => {
