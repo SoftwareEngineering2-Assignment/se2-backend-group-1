@@ -1,3 +1,6 @@
+/*
+* Import express, got and user,dashboard, source from models folder.
+*/
 /* eslint-disable max-len */
 const express = require('express');
 const got = require('got');
@@ -8,6 +11,17 @@ const User = require('../models/user');
 const Dashboard = require('../models/dashboard');
 const Source = require('../models/source');
 
+/* 
+* Handling GET/POST requests. If an error occurs during the execution of the following routes handlers, it will pass control to the next
+* middleware with the error as an argument, for the error to be handled.
+*/
+
+/*
+* Get and assign the url, type, headers, body and params, then use a switch to handle different HTTP request types.
+* If it is a GET/POST/PUT request make a GET/POST/PUT request to the specified url and pass the headers and params as options. 
+* If the request type is none of these, set statusCode to 500 and a message indicating that something went wrong.
+* After that, return a JSON object with status set to the statusCode of the response and a response set to the body of the response.
+*/
 router.get('/statistics',
   async (req, res, next) => {
     try {
@@ -40,6 +54,10 @@ router.get('/statistics',
     }
   });
 
+/*
+* Get and assign the url and make a GET request to the specified url, then return a JSON object with status 
+* set to statusCode and an active set to a boolean indicating whether the status code is 200. 
+*/
 router.get('/test-url',
   async (req, res) => {
     try {
@@ -57,6 +75,12 @@ router.get('/test-url',
     }
   });
 
+/*
+* Get and assign the url, type, headers, body, and params, then use a switch statement to handle different HTTP request types. 
+* If the request type is GET/POST/PUT, make a GET/POST/PUT request to the specified url and pass the headers and params as options. 
+* If the request type is not one of these, set the statusCode to 500 and the body to a message indicating that something went wrong.
+* After making the HTTP request, return a JSON object with status set to the statusCode of the response and a response set to body. 
+*/
 router.get('/test-url-request',
   async (req, res) => {
     try {
@@ -100,4 +124,5 @@ router.get('/test-url-request',
     }
   });
 
+// Export the router
 module.exports = router;
