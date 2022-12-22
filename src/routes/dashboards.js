@@ -157,8 +157,7 @@ router.get('/dashboard',
   });
 
 /*
-* Get the values of id, layout, items and nextId and update the dashboard in the database, by finding a document with a matching id and an
-* authenticated user. 
+* Get the values of id, layout, items and nextId and update the dashboard in the database. Find a document with a matching id and an authenticated user. 
 * If one is found, update the layout, items and nextId and sends a JSON response with success set to true.
 * If none is found, return a JSON object with status 409 (conflict) and a message indicating that the selected dashboard was not found. 
 */
@@ -189,9 +188,8 @@ router.post('/save-dashboard',
   }); 
 
 /*
-* Get the values of dashboardId and name.
-* Find the values of id, layout, items and nextId and find the dashboard in the database, by finding a document with authenticated user
-* and a matching name.
+* Get the values of dashboardId and name. Find the values of id, layout, items and nextId and find the dashboard in the database,
+* find a document with authenticated user and a matching name.
 * If one is found, return a JSON object with status 409 and a message indicating that a dashboard with that name already exists. Then
 * create a new dashboard document with the name, layout, items, nextId and owner from the old dashboard. Save the new dashboard to 
 * the database and returns a JSON object with a success field set to true.  

@@ -123,7 +123,7 @@ router.post('/resetpassword',
   });
 
 /*
-* Use an authorization middleware, to check whether the request contains a valid JSON Web Token (JWT) in the Authorization header and verifies it.
+* Check whether the request contains a valid JSON Web Token (JWT) in the Authorization header and verifies it.
 * If the JWT is not present or is invalid, send a response with status code of 401 and a message indicating that the request is unauthorized.
 * If the JWT is present and valid, decode the JWT and add the decoded payload to the req.decoded, then call the next function.
 * Use async to extract the password from body and the username from the decoded JWT in the req.decoded. Then use the username to find

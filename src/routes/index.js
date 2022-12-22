@@ -20,5 +20,5 @@ router.use('/dashboards', dashboards);
 router.use('/general', general);
 router.use('/', root);
 
-// Export the router object, which makes it available for use in other parts of the application.
+// Export the router.
 module.exports = router;
