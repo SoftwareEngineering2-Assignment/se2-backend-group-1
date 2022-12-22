@@ -1,5 +1,5 @@
 /*
-* Set min to 5 and expire to 12h and export an object with that values. 
+* Set min and expire and export them. 
 */
 const min = 5;
 const expires = '12h';

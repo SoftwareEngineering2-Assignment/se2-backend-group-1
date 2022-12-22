@@ -8,9 +8,7 @@ const dashboards = require('./dashboards');
 const general = require('./general');
 const root = require('./root');
 
-/*
-* Define a middleware router object. 
-*/
+// Define a middleware router object. 
 const router = express.Router();
 
 /*
@@ -22,7 +20,5 @@ router.use('/dashboards', dashboards);
 router.use('/general', general);
 router.use('/', root);
 
-/*
-* Export the router object, which makes it available for use in other parts of the application.
-*/
+// Export the router object, which makes it available for use in other parts of the application.
 module.exports = router;

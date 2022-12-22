@@ -229,7 +229,5 @@ router.post('/check-sources',
     }
   });
 
-/*
-* Export the router
-*/ 
+// Export the router
 module.exports = router;

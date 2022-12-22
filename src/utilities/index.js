@@ -1,5 +1,5 @@
 /*
-* Import mailer from the same folder and export an object with properties, mainer (with value mailer).
+* Import mailer and export it.
 */
 const mailer = require('./mailer');
 

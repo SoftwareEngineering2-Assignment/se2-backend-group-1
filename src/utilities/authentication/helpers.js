@@ -1,14 +1,13 @@
 /*
-* Import ramda, jsonwebtoken and bcryptjs
+* Import ramda, jsonwebtoken and bcryptjs.
 */
 const {genSaltSync, hashSync, compareSync} = require('bcryptjs');
 const {sign} = require('jsonwebtoken');
 const {pipe} = require('ramda');
 
 /*
-* Export first passwordDigest, comparePassword and jwtSign, which generate a password, compare a text to a password and sign a token, with payload and 
-* the server secret. 'salt' is set to 10 and determines the computational cost of generating the salt.
-* Increasing the number means slower and more secure, but also requires more resources.
+* Export first passwordDigest, comparePassword and jwtSign, which generate a password, compare a text to a password and sign a token. 'salt' is 
+* set to 10 and determines the computational cost. Increasing the number means slower and more secure, but requires more resources.
 */
 module.exports = {
   /**
