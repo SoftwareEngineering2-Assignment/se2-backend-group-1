@@ -1,10 +1,9 @@
 /*
-* Import password and send.
+* Import password and send and export them (with mail == password).
 */
 const password = require('./password');
 const send = require('./send');
 
-// Export an object with the mail with the value of password and send.
 module.exports = {
   mail: password,
   send
