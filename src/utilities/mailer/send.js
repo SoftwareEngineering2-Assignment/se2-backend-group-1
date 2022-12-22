@@ -1,7 +1,15 @@
+/*
+* Import @sendgrid/mail and set the sendgrid_api_key to it.
+*/
 const sg = require('@sendgrid/mail');
 
 sg.setApiKey(process.env.SENDGRID_API_KEY);
 
+/*
+* Export a function that sends an email. The function takes in three arguments,to,subject,email, which are the email address of the recipient,
+* the subject of the email and the email body in HTML format respectively. This constructs an email including 'to', 'subject'
+* and html and then sends the email. The console.log statements are for debugging purposes.
+*/
 module.exports = (to, subject, email) => {
   /**
    * @name sendEmail
