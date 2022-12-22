@@ -122,7 +122,6 @@ router.post('/change-source',
       return next(err.body);
     }
   }); 
-
 /*
 * Delete a source if it is found in the database and the authenticated user is the owner of the source. If it is not found or the authenticated
 * user is not the owner of the source, return a JSON object with status set to 409 and a message. If the source is successfully deleted,
@@ -147,7 +146,6 @@ router.post('/delete-source',
       return next(err.body);
     }
   }); 
-
 /*
 * Get the name, owner and user from body. Then check if the owner is 'self'. If it is, set the userId to the id of the user object. 
 * If it is not, set the userId to the value of owner. Use the Source model to find a data source with a name and owner that match the
