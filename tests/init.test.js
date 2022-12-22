@@ -1,7 +1,4 @@
 /* eslint-disable import/no-unresolved */
-/*
-* Import .env, node:http, ava, got, test-listen and src/utilities/authentication/helpers for the tests.
-*/ 
 require('dotenv').config();
 
 const http = require('node:http');
