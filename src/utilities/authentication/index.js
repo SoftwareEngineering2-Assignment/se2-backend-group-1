@@ -1,5 +1,5 @@
 /*
-* Import helpers from the same folder and export it
+* Import helpers and export it.
 */
 const helpers = require('./helpers');
 

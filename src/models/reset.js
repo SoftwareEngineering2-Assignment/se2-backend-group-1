@@ -1,6 +1,5 @@
 /*
-* Importing mongoose and a mongoose plugin for more user-friendly validation error messages when a unique constraint is violated.
-* Also import an expire constant from the validation module in the utilities folder 
+* Importing mongoose and a mongoose plugin for more user-friendly validation error messages when a unique constraint is violated and validation.
 */
 /* eslint-disable func-names */
 const mongoose = require('mongoose');
@@ -8,17 +7,8 @@ const beautifyUnique = require('mongoose-beautiful-unique-validation');
 const {constants: {expires}} = require('../utilities/validation');
 
 /*
-* Define a Mongoose schema for a reset token document in a MongoDB database. The schema specifies the structure of the reset
-* token document and includes information about the type,  required status, and default value of each field in the document.
-
-* The fields are: username, token, and expiration date of the reset token. 
-* The username is required, with lowercase, indexed as a string and it's unique.
-
-* A token as a type of string is required.
-
-* The expireAt is indexed, but the index is to expire after the number of seconds, according to the expire constant and 
-* gets a default value of the current date and time, if it is not specified.
-* This ensures that there are no duplicate reset tokens for the same username just because the capitalization is different.
+* Define a Mongoose schema for a reset token document. The fields are: username, token, and expiration date of the reset token. 
+* These fields have their specific parameters.
 */
 const ResetSchema = new mongoose.Schema({
   username: {
@@ -39,18 +29,11 @@ const ResetSchema = new mongoose.Schema({
   },
 });
 
-/*
-* Plugin for Mongoose that turns duplicate errors into regular Mongoose validation errors.
-*/
+// Make duplicate errors into regular Mongoose validation errors.
 ResetSchema.plugin(beautifyUnique);
 
-/*
-* Used to pluralize the name of a collection based on the given singular name, in this case it return null, because of the argument. 
-*/
+// Converts a singular word to its plural form. 
 mongoose.pluralize(null);
 
-/*
-* Export a Mongoose model based on the ResetSchema, which represents a collection in the MongoDB database that allows to perform CRUD 
-* operations on the reset token documents in the collection.
-*/
+// Export a Mongoose model based on reset tokens.
 module.exports = mongoose.model('reset-tokens', ResetSchema);

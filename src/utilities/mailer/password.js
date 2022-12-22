@@ -1,12 +1,16 @@
+/*
+* Define platform_uri to baseUrl, the logo.png to logo and a link using a token.
+*/
 const baseUrl = process.env.PLATFORM_URI;
 const logo = `${process.env.SERVER_URI}/logo.png`;
 const link = (token) => `${baseUrl}/reset-password?token=${token}`;
 
-/**
- * Creates and returns an email with a password reset token. The parameters given are the
- * platform's logo and the reset token needed for chaning the password.
- */
-
+/*
+* This is a template for an email that is sent to users when they request to reset their password on a platform.
+* The email includes a button that the user can click to reset their password, using a token that is provided in the link.
+* When the button is clicked, the user will be redirected to a page where they can enter a new password.
+* The email also includes a message reminding the user to ignore the email if they did not request a password reset.
+*/
 module.exports = (token) => (`
     <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd>
     <html xmlns="http://www.w3.org/1999/xhtml" style="font-family: Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">

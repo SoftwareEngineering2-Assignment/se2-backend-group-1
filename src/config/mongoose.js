@@ -16,15 +16,10 @@ const mongooseOptions = {
   keepAliveInitialDelay: 300000
 };
 
-/*
-* mongodbUri takes the value from the .env file
-*/ 
+// Set the value of the secret.
 const mongodbUri = process.env.MONGODB_URI;
 
-/*
-* The above options are passed to the connect() method of the mongoose object when the connection is established.
-* The connect() method takes two arguments: the URI of the MongoDB database (from the .env file) and the options from above.
-*/
+// Export the module with the above options.
 module.exports = () => {
   // eslint-disable-next-line no-console
   mongoose.connect(mongodbUri, mongooseOptions).catch(console.error);
