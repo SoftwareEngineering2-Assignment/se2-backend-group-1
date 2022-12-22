@@ -125,8 +125,7 @@ router.post('/delete-source',
   }); 
 /*
 * Get the name, owner and user from body. Then check if the owner is 'self'. If it is, set the userId to the id of the user object. 
-* If it is not, set the userId to the value of owner. Use the Source model to find a data source with a name and owner that match the
-* provided name and userId, respectively.
+* If it is not, set the userId to the value of owner.
 */
 router.post('/source',
   async (req, res, next) => {
@@ -156,11 +155,7 @@ router.post('/source',
     }
   });
 
-/*
-* Check a list of body and create new sources if they don't already exist in the database. Initialize an empty array to store any sources 
-* that need to be created. Then loop through the list in body and check if each one exists in the database. If it doesn't exist, add to the 
-* newSources array. After the loop completes, loop through the newSources and create a new source for each item in the array using the Source model.
-*/
+// Check a list of body and create new sources if they don't already exist in the database.
 router.post('/check-sources',
   authorization,
   async (req, res, next) => {
