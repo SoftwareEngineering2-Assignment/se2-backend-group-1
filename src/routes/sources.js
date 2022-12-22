@@ -1,20 +1,12 @@
-/*
-* Import express and initializing a router, mongoose, middlewares module and source from models.
-* eslint-disable max-len
-*/
+/* eslint-disable max-len */
 const express = require('express');
 const mongoose = require('mongoose');
 const {authorization} = require('../middlewares');
+
 const router = express.Router();
+
 const Source = require('../models/source');
 
-/* 
-* Every handling of GET/POST requests of different types and using the authorization middleware first. Then send a JSON object with the appropriate 
-* response. If an error occurs during the execution of the following routes handlers, it will pass control to the next middleware with the error 
-* as an argument, for the error to be handled. 
-*/
-
-// Retrieve all sources that belong to a user, then go through the sources and pushes an object containing the source information.
 router.get('/sources',
   authorization,
   async (req, res, next) => {
@@ -42,8 +34,8 @@ router.get('/sources',
     } catch (err) {
       return next(err.body);
     }
-  }); 
-// Check if a source with the same name already exists for the user.
+  });
+
 router.post('/create-source', 
   authorization,
   async (req, res, next) => {
@@ -66,12 +58,13 @@ router.post('/create-source',
         vhost,
         owner: mongoose.Types.ObjectId(id)
       }).save();
+
       return res.json({success: true});
     } catch (err) {
       return next(err.body);
     }
-  });  
-// Check if the source object with the provided id exists and if it is owned by the authenticated user.
+  }); 
+
 router.post('/change-source', 
   authorization,
   async (req, res, next) => {
@@ -84,6 +77,7 @@ router.post('/change-source',
           message: 'The selected source has not been found.'
         });
       }
+      
       const sameNameSources = await Source.findOne({_id: {$ne: mongoose.Types.ObjectId(id)}, owner: mongoose.Types.ObjectId(req.decoded.id), name});
       if (sameNameSources) {
         return res.json({
@@ -91,6 +85,7 @@ router.post('/change-source',
           message: 'A source with the same name has been found.'
         });
       }
+
       foundSource.name = name;
       foundSource.type = type;
       foundSource.url = url;
@@ -104,7 +99,7 @@ router.post('/change-source',
       return next(err.body);
     }
   }); 
-// Delete a source if it is found in the database and the authenticated user is the owner of the source.
+
 router.post('/delete-source', 
   authorization,
   async (req, res, next) => {
@@ -123,10 +118,7 @@ router.post('/delete-source',
       return next(err.body);
     }
   }); 
-/*
-* Get the name, owner and user from body. Then check if the owner is 'self'. If it is, set the userId to the id of the user object. 
-* If it is not, set the userId to the value of owner.
-*/
+
 router.post('/source',
   async (req, res, next) => {
     try {
@@ -139,6 +131,7 @@ router.post('/source',
           message: 'The selected source has not been found.'
         });
       }
+
       const source = {};
       source.type = foundSource.type;
       source.url = foundSource.url;
@@ -155,13 +148,13 @@ router.post('/source',
     }
   });
 
-// Check a list of body and create new sources if they don't already exist in the database.
 router.post('/check-sources',
   authorization,
   async (req, res, next) => {
     try {
       const {sources} = req.body;
       const {id} = req.decoded;
+
       const newSources = [];
 
       for (let i = 0; i < sources.length; i += 1) {
@@ -194,5 +187,4 @@ router.post('/check-sources',
     }
   });
 
-// Export the router
 module.exports = router;
