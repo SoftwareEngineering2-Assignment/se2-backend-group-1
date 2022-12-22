@@ -1,11 +1,19 @@
+/*
+* Importing mongoose and a mongoose plugin for more user-friendly validation error messages when a unique constraint is violated.
+* Also helpers and validation from utilities.
+*/
 /* eslint-disable func-names */
 const mongoose = require('mongoose');
 const beautifyUnique = require('mongoose-beautiful-unique-validation');
 const {passwordDigest, comparePassword} = require('../utilities/authentication/helpers');
 const {constants: {min}} = require('../utilities/validation');
 
+// Converts a singular word to its plural form. 
 mongoose.pluralize(null);
 
+/*
+* Define a Mongoose schema for a Source model with fields email, username, password and registrationData, with their specific parameters.
+*/
 const UserSchema = new mongoose.Schema(
   {
     email: {
@@ -31,12 +39,10 @@ const UserSchema = new mongoose.Schema(
   }
 );
 
-// Plugin for Mongoose that turns duplicate errors into regular Mongoose validation errors.
-
+// Converts a singular word to its plural form. 
 UserSchema.plugin(beautifyUnique);
 
 // Pre save hook that hashes passwords
-
 UserSchema.pre('save', function (next) {
   if (this.isModified('password')) {
     this.password = passwordDigest(this.password);
@@ -48,9 +54,9 @@ UserSchema.pre('save', function (next) {
 });
 
 // Model method that compares hashed passwords
-
 UserSchema.methods.comparePassword = function (password) {
   return comparePassword(password, this.password);
 };
 
+// Export the users.
 module.exports = mongoose.model('users', UserSchema);
