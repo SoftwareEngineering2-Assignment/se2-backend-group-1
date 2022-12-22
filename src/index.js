@@ -25,7 +25,6 @@ app.use(compression());
 /*
 * The logger middleware will only be used if the NODE_ENV is set to 'test', this allows to disable certain middleware functions when running tests
 * to avoid generating unnecessary output or modifying the request or response objects in unintended ways.
-
 * Then set the limit of json and urlencoded to 50mb and urlencoded extented to false.  
 */ 
 if (process.env.NODE_ENV !== 'test') {
@@ -34,39 +33,25 @@ if (process.env.NODE_ENV !== 'test') {
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: false}));
 
-/*
-* Mongo configuration
-*/
+// Mongo configuration
 mongoose();
 
-/*
-* Use routes.
-*/
+// Use routes.
 app.use('/', routes);
 
-/*
-* Use the server static files.
-*/
+// Use the server static files.
 app.use(express.static(path.join(__dirname, 'assets')));
 
-/*
-* Use the error handler.
-*/
+//Use the error handler.
 app.use(error);
 
-/*
-* Set the port to .env or 3000
-*/
+// Set the port to .env or 3000
 const port = process.env.PORT || 3000;
 
-/*
-* Listen to the port and print a text in the console.
-*/
+// Listen to the port and print a text in the console.
 app.listen(port, () =>
 // eslint-disable-next-line no-console
   console.log(`NodeJS Server listening on port ${port}. \nMode: ${process.env.NODE_ENV}`));
 
-/*
-* Export the app.
-*/
+// Export the app.
 module.exports = app;

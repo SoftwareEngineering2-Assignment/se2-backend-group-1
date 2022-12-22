@@ -3,7 +3,5 @@
 */
 const helpers = require('./helpers');
 
-/*
-* Export the helpers module.
-*/
+// Export the helpers module.
 module.exports = {helpers};

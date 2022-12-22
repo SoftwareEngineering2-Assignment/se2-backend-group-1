@@ -6,17 +6,9 @@ const {sign} = require('jsonwebtoken');
 const {pipe} = require('ramda');
 
 /*
-* Export 3 functions:
-
-* passwordDigest, hashes a password using the bcrypt library. It takes a password and an optional salt work factor as input and returns
-* the hashed password. 
-* 'salt' is set to 10 and determines the computational cost of generating the salt. Increasing the number means that the hashing process will be slower and more secure,
-* but also requires more resources.
-
-* comparePassword, compares a text with a hashed password and returns a boolean indicating whether the two passwords match.
-
-* jwtSign, signs a JSON web token (JWT) with a given payload and the server secret. The server secret is a string that is used to sign the JWT
-* and should be kept secret.
+* Export first passwordDigest, comparePassword and jwtSign, which generate a password, compare a text to a password and sign a token, with payload and 
+* the server secret. 'salt' is set to 10 and determines the computational cost of generating the salt.
+* Increasing the number means slower and more secure, but also requires more resources.
 */
 module.exports = {
   /**
