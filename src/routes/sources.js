@@ -5,9 +5,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const {authorization} = require('../middlewares');
-
 const router = express.Router();
-
 const Source = require('../models/source');
 
 /* 
@@ -18,10 +16,7 @@ const Source = require('../models/source');
 /*
 * Handling GET requests to the '/sources' route.
 
-* Use the authorization middleware, which is checking, if the client sending the request is authorized to access the route. 
-* There is a documentation on authorization for the posibility that the client is not authorized.
-
-* Retrieving all sources that belong to a user, then go through the sources and pushes an object containing the source information.
+* Αuthorize it, retrieve all sources that belong to a user, then go through the sources and pushes an object containing the source information.
 * Then return a JSON object with success property and the sources array.
 */  
 router.get('/sources',
@@ -57,9 +52,7 @@ router.get('/sources',
 /*
 * Handling POST requests to the '/create-source' route.
 
-* Use the authorization middleware. There is a documentation on authorization for the posibility that the client is not authorized.
-
-* Check if a source with the same name already exists for the user.
+* Αuthorize it, check if a source with the same name already exists for the user.
 
 * If it does, return a response with status code of 409 and a message indicating that a source with that name already exists.
 
@@ -98,9 +91,7 @@ router.post('/create-source',
 /*
 * Handling POST requests to the '/change-source' route.
 
-* Use the authorization. There is a documentation on authorization for the posibility that the client is not authorized.
-
-* Check if the source object with the provided id exists and if it is owned by the authenticated user.
+* Αuthorize it, check if the source object with the provided id exists and if it is owned by the authenticated user.
 
 * If it does not or is not owned by the authenticated user, the route sends a response with a 409 status code and an error message.
 
@@ -148,9 +139,7 @@ router.post('/change-source',
 /*
 * Handling POST requests to the '/delete-source' route.
 
-* Use the authorization. There is a documentation on authorization for the posibility that the client is not authorized.
-
-* Delete a source if it is found in the database and the authenticated user is the owner of the source.
+* Αuthorize it, delete a source if it is found in the database and the authenticated user is the owner of the source.
 
 * If it is not found or the authenticated user is not the owner of the source, return a JSON object with status set to 409 
 * and a message with a value of 'The selected source has not been found.'.
@@ -159,7 +148,6 @@ router.post('/change-source',
 
 * Find a single source in the database that matches the specified id and owner s and remove it. 
 * Return the deleted document as a result, if no document is found, return null.
-
 */
 router.post('/delete-source', 
   authorization,
@@ -183,9 +171,7 @@ router.post('/delete-source',
 /*
 * Handling POST requests to the '/source' route.
 
-* Use the authorization. There is a documentation on authorization for the posibility that the client is not authorized.
-
-* Get the name, owner and user from body. Then check if the owner is 'self'
+* Αuthorize it, get the name, owner and user from body. Then check if the owner is 'self'
 
 * If it is, set the userId to the id of the user object.
 
@@ -227,6 +213,18 @@ router.post('/source',
     }
   });
 
+/*
+* Handling POST requests to the '/check-source' route.
+
+* Αuthorize it, check a list of body and create new sources if they don't already exist in the database.
+
+* Initialize an empty array to store any sources that need to be created. Then loop through the list in body and check if each one exists 
+* in the database. If it doesn't exist, add to the newSources array.
+
+* After the loop completes, loop through the newSources and create a new source for each item in the array using the Source model.
+
+* Return a JSON response containing the success set to true and newSources.
+*/
 router.post('/check-sources',
   authorization,
   async (req, res, next) => {
@@ -266,4 +264,7 @@ router.post('/check-sources',
     }
   });
 
+/*
+* Export the router
+*/ 
 module.exports = router;
