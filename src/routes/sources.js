@@ -1,3 +1,6 @@
+/*
+* Import express and initializing a router, mongoose, middlewares module and source from models.
+*/
 /* eslint-disable max-len */
 const express = require('express');
 const mongoose = require('mongoose');
@@ -7,6 +10,20 @@ const router = express.Router();
 
 const Source = require('../models/source');
 
+/* 
+* If an error occurs during the execution of the following routes handlers, it will pass control to the next middleware with the error 
+* as an argument, for the error to be handled.
+*/
+
+/*
+* Handling GET requests to the '/sources' route.
+
+* Use the authorization middleware, which is checking, if the client sending the request is authorized to access the route. 
+* There is a documentation on authorization for the posibility that the client is not authorized.
+
+* Retrieving all sources that belong to a user, then go through the sources and pushes an object containing the source information.
+* Then return a JSON object with success property and the sources array.
+*/  
 router.get('/sources',
   authorization,
   async (req, res, next) => {
@@ -187,4 +204,7 @@ router.post('/check-sources',
     }
   });
 
+/*
+* Export the router object, which makes it available for use in other parts of the application.
+*/
 module.exports = router;

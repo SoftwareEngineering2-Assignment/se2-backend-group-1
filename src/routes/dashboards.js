@@ -23,9 +23,9 @@ const Source = require('../models/source');
 */
 
 /*
-* Handling GET requests to the '/dashboards' route with three middleware functions.
+* Handling GET requests to the '/dashboards' route.
 
-* The authorization middleware function is checking, if the client sending the request is authorized to access the route. 
+* Use the authorization middleware, which is checking, if the client sending the request is authorized to access the route. 
 * There is a documentation on authorization for the posibility that the client is not authorized.
 
 * An async function, retrieves the id from the decoded of the request object req. It uses the id value to find all 
@@ -59,7 +59,7 @@ router.get('/dashboards',
   });
 
 /*
-* Handling POST requests to the '/create-dashboard' route with two middleware functions.
+* Handling POST requests to the '/create-dashboard' route.
 
 * Use the authorization middleware.
 
@@ -101,7 +101,7 @@ router.post('/create-dashboard',
   }); 
 
 /*
-* Handling POST requests to the '/delete-dashboard' route with two middleware functions.
+* Handling POST requests to the '/delete-dashboard' route.
 
 * Use the authorization middleware.
 
@@ -133,7 +133,7 @@ router.post('/delete-dashboard',
   }); 
 
 /*
-* Handling GET requests to the '/dashboards' route with three middleware functions.
+* Handling GET requests to the '/dashboards' route.
 
 * Use the authorization middleware.
 
@@ -181,7 +181,7 @@ router.get('/dashboard',
   });
 
 /*
-* Handling POST requests to the '/save-dashboard' route with three middleware functions.
+* Handling POST requests to the '/save-dashboard' route.
 
 * Use the authorization middleware.
 
