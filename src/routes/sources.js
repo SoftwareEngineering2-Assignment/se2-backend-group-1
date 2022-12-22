@@ -280,7 +280,4 @@ router.post('/check-sources',
     }
   });
 
-/*
-* Export the router object, which makes it available for use in other parts of the application.
-*/
 module.exports = router;
