@@ -6,8 +6,7 @@ require('dotenv').config();
 
 const http = require('node:http');
 const test = require('ava').default;
-// const got = require('got');
-import got from 'got';
+const got = require('got');
 const listen = require('test-listen');
 
 const app = require('../src/index');
