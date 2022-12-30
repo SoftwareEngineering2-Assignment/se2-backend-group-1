@@ -33,3 +33,57 @@ test('GET /sources returns correct response and status code', async (t) => {
   const {statusCode} = await t.context.got(`sources/sources?token=${token}`);
   t.is(statusCode, 200);
 });
+
+
+
+
+
+
+
+
+
+
+
+test.beforeEach(async t => {
+  // Create a dashboard
+  t.context.dashboard = new dashboard({name:'Test Dashboard',views: 0,owner: mongoose.Types.ObjectId()});
+  await t.context.dashboard.save(); // Save it
+  t.context.token = jwtSign({id: t.context.dashboard.owner});
+});
+
+test.afterEach.always(async t => {
+  // Delete the dashboard 
+  await t.context.dashboard.delete();
+});
+
+test('GET /dashboards returns correct response and status code and type', async t => {
+  const token = t.context.token
+  const {body, statusCode} = await t.context.got(`dashboards/dashboards?token=${token}`);
+
+  t.is(statusCode,200)
+  t.assert(body.success);
+  t.is(typeof body.dashboards, 'object');
+  t.is(body.dashboards.length, 1);
+});
+
+test('GET /dashboards with no dashboards return correct response and status code and type', async t => {
+  // Create one empty dashboard to see if it's accurate
+  const token = jwtSign({id: mongoose.Types.ObjectId()});
+  const {body, statusCode} = await t.context.got(`dashboards/dashboards?token=${token}`);
+
+  t.is(statusCode, 200);
+  t.assert(body.success);
+  t.is(typeof body.dashboards, 'object');
+  t.is(body.dashboards.length, 0);
+});
+
+
+// test('GET /dashboards throws error on invalid token', async t => {
+//   const token = jwtSign({id: 'invalid-id'});
+//   const error = await t.throwsAsync(async () => {
+//     await t.context.got(`dashboards/dashboards?token=${token}`, { throwHttpErrors: true });
+//   });
+//   console.log(error);
+//   t.is(error.statusCode, 500);
+//   t.truthy(error.response.body.error);
+// });
