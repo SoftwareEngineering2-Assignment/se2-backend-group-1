@@ -22,19 +22,22 @@ test.after.always((t) => {
 
 test.beforeEach(async t => {
   // Create a dashboard
-  t.context.dashboard = new dashboard({name:'Test Dashboard',views: 0,owner: mongoose.Types.ObjectId()});
+  t.context.dashboard = new dashboard({name:'Test_Dashboard',views: 10,owner: mongoose.Types.ObjectId()});
   await t.context.dashboard.save(); // Save it
   t.context.token = jwtSign({id: t.context.dashboard.owner});
 });
 
 test.afterEach.always(async t => {
-  // Delete the dashboard 
-  await t.context.dashboard.delete();
+  await t.context.dashboard.delete(); // Delete the dashboard 
 });
 
+
+/*
+* Tests for get /dashboards. One test for a correct given token, one for a token with no dashboards in it
+* and one for when an error happens.  
+*/ 
 test('GET /dashboards returns correct response and status code and type', async t => {
-  const token = t.context.token
-  const {body, statusCode} = await t.context.got(`dashboards/dashboards?token=${token}`);
+  const {body, statusCode} = await t.context.got(`dashboards/dashboards?token=${t.context.token}`);
 
   t.is(statusCode,200)
   t.assert(body.success);
@@ -55,11 +58,89 @@ test('GET /dashboards with no dashboards return correct response and status code
 
 
 // test('GET /dashboards throws error on invalid token', async t => {
-//   const token = jwtSign({id: 'invalid-id'});
+//   const token = jwtSign({id: 'hello'}); // use invalid id
 //   const error = await t.throwsAsync(async () => {
 //     await t.context.got(`dashboards/dashboards?token=${token}`, { throwHttpErrors: true });
 //   });
 //   console.log(error);
 //   t.is(error.statusCode, 500);
-//   t.truthy(error.response.body.error);
+//   t.truthy(error.body.error);
+// });
+
+
+
+/*
+* Tests for create-dashboard
+*/
+test('POST /create-dashboard ', async t => {
+  const dasboard = {json: {name: t.context.dashboard,id: t.context.token}};
+  const {body, statusCode} = await t.context.got.post(`dashboards/create-dashboard?token=${t.context.token}`,dasboard);
+
+  t.is(statusCode, 200);
+  t.assert(body.success);
+});
+
+
+
+// test('create dashboard with duplicate name', async t => {
+//   const token = jwtSign({id: "41"});
+//   const dasboard = {json: {name: t.context.dashboard,id: "12"}};
+//   const {body, statusCode} = await t.context.got.post(`dashboards/create-dashboard?token=${token}`,dasboard);
+
+  
+//   t.is(statusCode, 409);
+//   // t.deepEqual(body, {status: 409,message: 'A dashboard with that name already exists.'});
+// });
+
+
+
+
+
+/*
+* Tests for delete-dashboard
+*/
+test('POST /delete-dashboard', async t => {
+  const dasboard = {json: {token: t.context.token,id: t.context.dashboard._id}};
+  const {body, statusCode} = await t.context.got.post(`dashboards/delete-dashboard?token=${t.context.token}`,dasboard);
+
+  t.is(statusCode, 200);
+  t.assert(body.success);
+});
+
+
+// test('POST /delete-dashboard with invalid id', async t => {
+//   const token = t.context.token;
+//   const dasboard = {json: {token: token,id: mongoose.Types.ObjectId(t.context.dashboard._id)}};
+//   const {body, statusCode} = await t.context.got.post(`dashboards/delete-dashboard?token=${token}`,dasboard);
+
+//   t.is(statusCode, 409);
+//   t.deepEqual(body, {status: 409,message: 'The selected dashboard has not been found.'});
+// });
+
+
+
+
+/*
+* Tests for dashboard
+*/
+test('GET /dashboard', async t => {
+  const id = t.context.dashboard.id;
+  const { body, statusCode } = await t.context.got(`dashboards/dashboard?id=${id}&token=${t.context.token}`);
+
+  t.is(statusCode, 200);
+  t.deepEqual(body, {success: true,sources: [],dashboard: {
+      id: t.context.dashboard.id,
+      name: t.context.dashboard.name,
+      layout: [],
+      items: t.context.dashboard.items,
+      nextId: t.context.dashboard.nextId,
+    }
+  });
+});
+
+// test('get dashboard with invalid id', async t => {
+//   const { body, statusCode } = await t.context.got(`dashboards/dashboard?id=${mongoose.Types.ObjectId()}&token=${t.context.token}`);
+
+//   t.is(statusCode, 409);
+//   t.deepEqual(body, {status: 409,message: 'The selected dashboard has not been found.'});
 // });
