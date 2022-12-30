@@ -63,15 +63,3 @@ test('GET /dashboards with no dashboards return correct response and status code
 //   t.is(error.statusCode, 500);
 //   t.truthy(error.response.body.error);
 // });
-test('GET /statistics returns correct response and status code', async (t) => {
-  const {body, statusCode} = await t.context.got('general/statistics');
-  t.is(body.sources, 0);
-  t.assert(body.success);
-  t.is(statusCode, 200);
-});
-
-test('GET /sources returns correct response and status code', async (t) => {
-  const token = jwtSign({id: 1});
-  const {statusCode} = await t.context.got(`sources/sources?token=${token}`);
-  t.is(statusCode, 200);
-});

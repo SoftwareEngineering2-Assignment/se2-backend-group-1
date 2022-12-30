@@ -32,7 +32,7 @@ jobs:
 
       # Runs the tests 
       - name: Run test
-        run: SERVER_SECRET="${{ secrets.SERVER_SECRET }}" npm test
+        run: npm test tests/routes_dashboard.test.js
        
 #       - name: format check
 #         run: npm run format-check
