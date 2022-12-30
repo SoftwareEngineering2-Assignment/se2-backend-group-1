@@ -3,7 +3,6 @@
 * Import .env, node:http, ava, got, test-listen and helpers from utilities for the tests.
 */ 
 require('dotenv').config();
-
 const http = require('node:http');
 const test = require('ava').default;
 const got = require('got');
