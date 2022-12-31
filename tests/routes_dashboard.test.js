@@ -5,7 +5,6 @@ const test = require('ava').default;
 const got = require('got');
 const listen = require('test-listen');
 const mongoose = require('mongoose');
-
 const app = require('../src/index');
 const {jwtSign} = require('../src/utilities/authentication/helpers');
 const dashboard = require('../src/models/dashboard');
@@ -36,7 +35,7 @@ test.afterEach.always(async t => {
 * Tests for get /dashboards. One test for a correct given token, one for a token with no dashboards in it
 * and one for when an error happens.  
 */ 
-test('GET /dashboards returns correct response and status code and type', async t => {
+test('GET /dashboards returns correct response and status code and type of body', async t => {
   const {body, statusCode} = await t.context.got(`dashboards/dashboards?token=${t.context.token}`);
 
   t.is(statusCode,200)
@@ -72,7 +71,7 @@ test('GET /dashboards with no dashboards return correct response and status code
 /*
 * Tests for create-dashboard
 */
-test('POST /create-dashboard ', async t => {
+test('POST /create-dashboard return correct statusCode and success', async t => {
   const dasboard = {json: {name: t.context.dashboard,id: t.context.token}};
   const {body, statusCode} = await t.context.got.post(`dashboards/create-dashboard?token=${t.context.token}`,dasboard);
 
@@ -82,13 +81,13 @@ test('POST /create-dashboard ', async t => {
 
 
 
-// test('create dashboard with duplicate name', async t => {
+// test('POST /create-dashboard with duplicate name', async t => {
 //   const token = jwtSign({id: "41"});
-//   const dasboard = {json: {name: t.context.dashboard,id: "12"}};
+//   const dasboard = {json: {name: t.context.dashboard,id: 2}};
 //   const {body, statusCode} = await t.context.got.post(`dashboards/create-dashboard?token=${token}`,dasboard);
 
-  
-//   t.is(statusCode, 409);
+//   t.is(statusCode, 200);
+//   t.is(body.status, 409);
 //   // t.deepEqual(body, {status: 409,message: 'A dashboard with that name already exists.'});
 // });
 
@@ -99,7 +98,7 @@ test('POST /create-dashboard ', async t => {
 /*
 * Tests for delete-dashboard
 */
-test('POST /delete-dashboard', async t => {
+test('POST /delete-dashboard return correct statusCode and success', async t => {
   const dasboard = {json: {token: t.context.token,id: t.context.dashboard._id}};
   const {body, statusCode} = await t.context.got.post(`dashboards/delete-dashboard?token=${t.context.token}`,dasboard);
 
@@ -113,7 +112,8 @@ test('POST /delete-dashboard', async t => {
 //   const dasboard = {json: {token: token,id: mongoose.Types.ObjectId(t.context.dashboard._id)}};
 //   const {body, statusCode} = await t.context.got.post(`dashboards/delete-dashboard?token=${token}`,dasboard);
 
-//   t.is(statusCode, 409);
+//   t.is(statusCode, 200);
+//   t.is(body.status, 409);
 //   t.deepEqual(body, {status: 409,message: 'The selected dashboard has not been found.'});
 // });
 
@@ -123,7 +123,7 @@ test('POST /delete-dashboard', async t => {
 /*
 * Tests for dashboard
 */
-test('GET /dashboard', async t => {
+test('GET /dashboard return correct statusCode and body', async t => {
   const id = t.context.dashboard.id;
   const { body, statusCode } = await t.context.got(`dashboards/dashboard?id=${id}&token=${t.context.token}`);
 
@@ -138,9 +138,35 @@ test('GET /dashboard', async t => {
   });
 });
 
-// test('get dashboard with invalid id', async t => {
-//   const { body, statusCode } = await t.context.got(`dashboards/dashboard?id=${mongoose.Types.ObjectId()}&token=${t.context.token}`);
+test('GET /dashboard with invalid id return correct statusCode, body and message', async t => {
+  const { body, statusCode } = await t.context.got(`dashboards/dashboard?id=${mongoose.Types.ObjectId()}&token=${t.context.token}`);
 
-//   t.is(statusCode, 409);
-//   t.deepEqual(body, {status: 409,message: 'The selected dashboard has not been found.'});
-// });
+  t.is(statusCode, 200);
+  t.is(body.status, 409);
+  t.deepEqual(body, {status: 409,message: 'The selected dashboard has not been found.'});
+});
+
+
+
+/*
+* Tests for save-dashboard
+*/
+test('POST /save-dashboard return correct statusCode and body', async t => {
+  const dasboard = {json: {id: t.context.dashboard._id, layout: {}, items: [], nextId: 1}};
+  const {body, statusCode} = await t.context.got.post(`dashboards/save-dashboard?token=${t.context.token}`,dasboard);
+
+  t.is(statusCode, 200);
+  t.assert(body.success);
+});
+
+test('POST /save-dashboard with invalid id return correct statusCode, body and message', async t => {
+  const dasboard = {json: {id: 1, layout: {}, items: [], nextId: 1}};
+  const {body, statusCode} = await t.context.got.post(`dashboards/save-dashboard?token=${t.context.token}`,dasboard);
+
+  t.is(statusCode, 200);
+  t.is(body.status, 409);
+  t.is(body.message, 'The selected dashboard has not been found.');
+});
+
+
+
