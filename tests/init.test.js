@@ -11,6 +11,7 @@ const listen = require('test-listen');
 
 const app = require('../src/index');
 const {jwtSign} = require('../src/utilities/authentication/helpers');
+const password = require('../src/utilities/mailer/password');
 
 test.before(async (t) => {
   t.context.server = http.createServer(app);
@@ -22,15 +23,23 @@ test.after.always((t) => {
   t.context.server.close();
 });
 
-test('GET /statistics returns correct response and status code', async (t) => {
-  const {body, statusCode} = await t.context.got('general/statistics');
-  t.is(body.sources, 0);
-  t.assert(body.success);
-  t.is(statusCode, 200);
+/*
+* Test for utilities/mailer/password
+*/
+test('utilities/mailer/password', (t) => {
+  // Initialize token and email
+  const token = 'hello2000';
+  const email = password(token);
+
+  // See if the email contains the correct base URL and token
+  t.true(email.includes(process.env.PLATFORM_URI));
+  t.true(email.includes(process.env.SERVER_URI));
+  t.true(email.includes(token));
 });
 
-test('GET /sources returns correct response and status code', async (t) => {
-  const token = jwtSign({id: 1});
-  const {statusCode} = await t.context.got(`sources/sources?token=${token}`);
-  t.is(statusCode, 200);
-});
+
+// test('GET /sources returns correct response and status code', async (t) => {
+//   const token = jwtSign({id: 1});
+//   const {statusCode} = await t.context.got(`sources/sources?token=${token}`);
+//   t.is(statusCode, 200);
+// });
