@@ -13,6 +13,7 @@ const app = require('../src/index');
 const {jwtSign} = require('../src/utilities/authentication/helpers');
 const password = require('../src/utilities/mailer/password');
 const sendE = require('../src/utilities/mailer/send');
+const {passwordDigest} = require('../src/utilities/authentication/helpers');
 
 test.before(async (t) => {
   t.context.server = http.createServer(app);
@@ -51,7 +52,18 @@ test('Test for utilities/mailer/send', async (t) => {
   t.pass();
 });
 
-
+/*
+* Test for utilities/authentication/helpers
+*/
+test('passwordDigest generates a hashed password', t => {
+  const password = 'helloworld';
+  const hashedPassword = passwordDigest(password);
+  
+  // Inspect the type and check if the hashing method works, if it does. the password
+  // will be different from the hushed one.
+  t.true(typeof hashedPassword === 'string');
+  t.not(hashedPassword, password);
+});
 
 // test('GET /sources returns correct response and status code', async (t) => {
 //   const token = jwtSign({id: 1});
