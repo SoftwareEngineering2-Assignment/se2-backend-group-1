@@ -69,18 +69,6 @@ test('GET /dashboards with no dashboards return correct response and status code
   t.is(body.dashboards.length, 0);
 });
 
-test('GET /dashboards error handler', async (t) => {
-  // Create a new dashboard
-  await dashboard.create({name: 'Test Dashboard',layout: [],items: {},nextId: 1,owner: user._id});
-  
-  // Creates a fake implementation of the find method of the dashboard object that throws an error with a message
-  // when called. Then replaces the original implementation of the find method with the fake implementation.
-  const findFake = sinon.stub(dashboard, 'find').throws(new Error('Internal server error occurred'));  
-  const {statusCode} = await t.context.got(`dashboards/dashboards?token=${t.context.token}`);
-  t.is(statusCode, 404);
-  findFake.restore();
-});
-
 
 
 /*
@@ -103,19 +91,6 @@ test('POST /create-dashboard with duplicate name', async t => {
   t.is(statusCode, 200);
   t.is(body.status, 409);
   t.deepEqual(body, {status: 409,message: 'A dashboard with that name already exists.'});
-});
-
-test('POST /create-dashboard error handler', async (t) => {
-  // Create a new dashboard
-  await dashboard.create({name: 'Test Dashboard',layout: [],items: {},nextId: 1,owner: user._id});
-
-  // Creates a fake implementation of the find method of the dashboard object that throws an error with a message
-  // when called. Then replaces the original implementation of the find method with the fake implementation.
-  const findFake = sinon.stub(dashboard, 'findOne').throws(new Error('Internal server error occurred'));
-  const dashboardJson = {json: {name: 'Test Dashboard',id: t.context.token}};
-  const {statusCode} = await t.context.got.post(`dashboards/create-dashboard?token=${t.context.token}`,dashboardJson);
-  t.is(statusCode, 404);
-  findFake.restore();
 });
 
 
@@ -144,18 +119,6 @@ test('POST /delete-dashboard with invalid id', async t => {
   t.deepEqual(body, {status: 409,message: 'The selected dashboard has not been found.'});
 });
 
-test('POST /delete-dashboard error handler', async (t) => {
-  // Create a new dashboard
-  await dashboard.create({name: 'Test Dashboard',layout: [],items: {},nextId: 1,owner: user._id});
-
-  // Creates a fake implementation of the find method of the dashboard object that throws an error with a message
-  // when called. Then replaces the original implementation of the find method with the fake implementation.
-  const findFake = sinon.stub(dashboard, 'findOneAndRemove').throws(new Error('Internal server error occurred'));
-  const dashboardJson = {json: {name: 'Test Dashboard',id: t.context.token}};
-  const {statusCode} = await t.context.got.post(`dashboards/delete-dashboard?token=${t.context.token}`,dashboardJson);
-  t.is(statusCode, 404);
-  findFake.restore();
-});
 
 
 /*
@@ -211,3 +174,105 @@ test('POST /save-dashboard with invalid id return correct statusCode, body and m
 });
 
 
+
+/*
+* Tests for clone-dashboard
+*/
+test('POST /clone-dashboard return correct statusCode and body', async t => {
+  const dashboardJson = {json: {dashboardId: t.context.dashboard._id,name: 'New_Dashboard'}};
+  const {body, statusCode} = await t.context.got.post(`dashboards/clone-dashboard?token=${t.context.token}`,dashboardJson);
+
+  // Test for the correct values
+  t.is(statusCode, 200);
+  t.assert(body.success);
+});
+
+test('POST /clone-dashboard with duplicate name return correct statusCode and body', async t => {
+  const dashboardJson = {json: {dashboardId: t.context.dashboard._id,name: t.context.dashboard.name}};
+  const {body, statusCode} = await t.context.got.post(`dashboards/clone-dashboard?token=${t.context.token}`,dashboardJson);
+
+  // Test for the correct values
+  t.is(statusCode, 200);
+  t.is(body.status, 409);
+  t.is(body.message, 'A dashboard with that name already exists.');
+});
+
+
+
+/*
+* Tests for check-password-needed
+*/
+// test('POST /check-password-needed with valid user and dashboardId', async t => {
+//   const checkDashboard = await dashboard.create({name: 'check_dashboard',password: 'hellothere',shared: true,owner: t.context.user._id});
+//   const dashboardJson = {json: {user: t.context.user, dashboardId: checkDashboard._id}};
+//   const {body, statusCode} = await t.context.got.post('dashboards/check-password-needed',dashboardJson);
+
+//   t.is(body.status, 200);
+//   t.assert(body.success);
+//   t.is(body.owner, 'self');
+//   t.assert(body.shared);
+//   t.is(body.hasPassword, false);
+// });
+
+
+
+
+
+
+
+
+
+
+
+/*
+* Test for Error handlers
+*/
+// test('GET /dashboards error handler', async (t) => {
+//   // Create a new dashboard
+//   await dashboard.create({name: 'Test Dashboard',layout: [],items: {},nextId: 1,owner: user._id});
+  
+//   // Creates a fake implementation of the find method of the dashboard object that throws an error with a message
+//   // when called. Then replaces the original implementation of the find method with the fake implementation.
+//   const findFake = sinon.stub(dashboard, 'find').throws(new Error('Internal server error occurred'));  
+//   const {statusCode} = await t.context.got(`dashboards/dashboards?token=${t.context.token}`);
+//   t.is(statusCode, 404);
+//   findFake.restore();
+// });
+
+// test('POST /create-dashboard error handler', async (t) => {
+//   // Create a new dashboard
+//   await dashboard.create({name: 'Test Dashboard',layout: [],items: {},nextId: 1,owner: user._id});
+
+//   // Creates a fake implementation of the find method of the dashboard object that throws an error with a message
+//   // when called. Then replaces the original implementation of the find method with the fake implementation.
+//   const findFake = sinon.stub(dashboard, 'findOne').throws(new Error('Internal server error occurred'));
+//   const dashboardJson = {json: {name: 'Test Dashboard',id: t.context.token}};
+//   const {statusCode} = await t.context.got.post(`dashboards/create-dashboard?token=${t.context.token}`,dashboardJson);
+//   t.is(statusCode, 404);
+//   findFake.restore();
+// });
+
+// test('POST /delete-dashboard error handler', async (t) => {
+//   // Create a new dashboard
+//   await dashboard.create({name: 'Test Dashboard',layout: [],items: {},nextId: 1,owner: user._id});
+
+//   // Creates a fake implementation of the find method of the dashboard object that throws an error with a message
+//   // when called. Then replaces the original implementation of the find method with the fake implementation.
+//   const findFake = sinon.stub(dashboard, 'findOneAndRemove').throws(new Error('Internal server error occurred'));
+//   const dashboardJson = {json: {name: 'Test Dashboard',id: t.context.token}};
+//   const {statusCode} = await t.context.got.post(`dashboards/delete-dashboard?token=${t.context.token}`,dashboardJson);
+//   t.is(statusCode, 404);
+//   findFake.restore();
+// });
+
+// test('GET /dashboard error handler', async (t) => {
+//   // Create a new dashboard
+//   await dashboard.create({name: 'Test Dashboard',layout: [],items: {},nextId: 1,owner: user._id});
+  
+//   // Creates a fake implementation of the find method of the dashboard object that throws an error with a message
+//   // when called. Then replaces the original implementation of the find method with the fake implementation.
+//   const findFake = sinon.stub(dashboard, 'findOne').throws(new Error('Internal server error occurred'));  
+//   const {statusCode} = await t.context.got(`dashboards/dashboard?token=${t.context.token}`);
+//   t.is(statusCode, 404);
+//   findFake.restore();
+// });
