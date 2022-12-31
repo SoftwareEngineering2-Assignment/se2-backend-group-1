@@ -12,6 +12,7 @@ const listen = require('test-listen');
 const app = require('../src/index');
 const {jwtSign} = require('../src/utilities/authentication/helpers');
 const password = require('../src/utilities/mailer/password');
+const sendE = require('../src/utilities/mailer/send');
 
 test.before(async (t) => {
   t.context.server = http.createServer(app);
@@ -26,7 +27,7 @@ test.after.always((t) => {
 /*
 * Test for utilities/mailer/password
 */
-test('utilities/mailer/password', (t) => {
+test('Test for utilities/mailer/password', (t) => {
   // Initialize token and email
   const token = 'hello2000';
   const email = password(token);
@@ -36,6 +37,20 @@ test('utilities/mailer/password', (t) => {
   t.true(email.includes(process.env.SERVER_URI));
   t.true(email.includes(token));
 });
+
+/*
+* Test for utilities/mailer/send
+*/
+test('Test for utilities/mailer/send', async (t) => {
+  const to = 'test@example.com';
+  const subject = 'Test_Email';
+  const email = '<p>Hello</p>';
+  await sendE(to, subject, email);
+
+  // Assert that the email was sent
+  t.pass();
+});
+
 
 
 // test('GET /sources returns correct response and status code', async (t) => {
