@@ -8,7 +8,7 @@ const mongoose = require('mongoose');
 const app = require('../src/index');
 const {jwtSign} = require('../src/utilities/authentication/helpers');
 const sources = require('../src/models/source');
-const user = require('../src/models/user'); //?
+const user = require('../src/models/user'); 
 //const sinon = require('sinon'); 
 test.before(async (t) => {
   t.context.server = http.createServer(app);
@@ -25,9 +25,11 @@ test.after.always((t) => {
 
 test.beforeEach(async t => {
   // Create a source
+
+  t.context.user = new user({email: "Testemail@gmail.com", username: "Test_User", password: "Test_Password"})
   t.context.sources = new sources({name: "Test_Sources", owner: mongoose.Types.ObjectId(),
-                                  type: "Test_Type", url: "Test_Url", login: "Test_Login", 
-                                  passcode: "Test_Passcode", vhost: "Test_Vhost"});
+  type: "Test_Type", url: "Test_Url", login: "Test_Login", 
+  passcode: "Test_Passcode", vhost: "Test_Vhost"});
   await t.context.sources.save(); // Save it
   t.context.token = jwtSign({id: t.context.sources.owner});
 
@@ -97,23 +99,58 @@ test('POST /create-source with duplicate name', async t => {
 
 
 /*
-* Tests for change-source
+* Tests for change-source 
 */
-// test('POST /change-source return correct statusCode and success', async t => {
-//   const sourceJson = {json: {token: t.context.token,id: t.context.sources._id}};
-//   const {body, statusCode} = await t.context.got.post(`sources/change-source?token=${t.context.token}`,sourceJson);
+test('POST /change-source return correct statusCode and success', async t => {
+  const sourceJson = {json: {id: t.context.sources.id, name: "new name", 
+    type: "new type", url: "new url", login: "new login", 
+    passcode: "new passcode", vhost: "new vhost"}};
+    const {body, statusCode} = await t.context.got.post(`sources/change-source?token=${t.context.token}`,sourceJson);
 
-//   // Test for the correct values
-//   t.is(statusCode, 200);
-//   t.assert(body.success);
-// });
+  // Test for the correct values
+  t.is(statusCode, 200);
+  t.assert(body.success);
+});
 
+
+test('POST /change-source with invalid id', async t => {
+  const sourceJson = {json: {id: 1, name: "new name", 
+  type: "new type", url: "new url", login: "new login", 
+  passcode: "new passcode", vhost: "new vhost"}};
+  const {body, statusCode} = await t.context.got.post(`sources/change-source?token=${t.context.token}`,sourceJson);
+
+  // Test for the correct values
+  t.is(statusCode, 200);
+  t.deepEqual(body, {
+    status: 409,
+    message: 'The selected source has not been found.'
+  });
+});
+
+
+test('POST /change-source with same name', async t => {
+  t.context.sources2 = new sources({name: "Name_Already_Exist", owner: t.context.sources.owner,
+  type: "Test_Type", url: "Test_Url", login: "Test_Login", 
+  passcode: "Test_Passcode", vhost: "Test_Vhost"});
+  await t.context.sources2.save(); // Save it
+  const sourceJson = {json: {id: t.context.sources.id, name: "Name_Already_Exist", 
+    type: t.context.sources.type, url: t.context.sources.url, login: t.context.sources.login, 
+    passcode: t.context.sources.passcode, vhost: t.context.sources.vhost}};
+  const {body, statusCode} = await t.context.got.post(`sources/change-source?token=${t.context.token}`,sourceJson);
+
+  // Test for the correct values
+  t.is(statusCode, 200);
+  t.deepEqual(body, {
+    status: 409,
+    message: 'A source with the same name has been found.'
+  });
+});
 
 /*
 * Tests for delete-source
 */
 test('POST /delete-source return correct statusCode and success', async t => {
-  const sourceJson = {json: {token: t.context.token,id: t.context.sources._id}};
+  const sourceJson = {json: {token: t.context.token,id: t.context.sources.id}};
   const {body, statusCode} = await t.context.got.post(`sources/delete-source?token=${t.context.token}`,sourceJson);
 
   // Test for the correct values
@@ -132,5 +169,45 @@ test('POST /delete-source with invalid id', async t => {
   t.deepEqual(body, {status: 409,message: 'The selected source has not been found.'});
 });
 
+/*
+* Tests for source if we found the selected source
+*/
+test('POST /source return correct statusCode and body', async t => {
+  const sourceJson = {json: { name:  t.context.sources.name, owner: t.context.sources.owner, user: {id: 1}}};
+  
+  const { body, statusCode } = await t.context.got.post(`sources/source?token=${t.context.token}`,sourceJson);
+
+  // Test for the correct values
+  t.is(statusCode, 200);
+  t.assert(body.success);
+  t.deepEqual(body.source, {login: t.context.sources.login, passcode: t.context.sources.passcode, 
+              type: t.context.sources.type, url: t.context.sources.url, vhost: t.context.sources.vhost});
+});
 
 
+/*
+* Tests for source if the  selected source has not been found
+*/
+test('POST /source source not found', async t => {
+  const sourceJson = {json: { name:  t.context.sources.name, owner: "self", user: {id: 1}}};
+  
+  const { body, statusCode } = await t.context.got.post(`sources/source?token=${t.context.token}`,sourceJson);
+  // Test for the correct values
+  t.is(statusCode, 200);
+  t.deepEqual(body, {status: 409,message: 'The selected source has not been found.'});
+});
+
+
+/*
+* Test for check-sources. In order to check all the if statments we pass 2 elemnets in the array
+*/
+
+test('POST /check-sources return correct statusCode and success', async t => {
+  const sourceJson = {json: { sources: ["TEST", t.context.sources.name] }};
+  const {body, statusCode } = await t.context.got.post(`sources/check-sources?token=${t.context.token}`,sourceJson);
+  // Test for the correct values
+  t.is(statusCode, 200);
+  t.is(body.newSources[0], "TEST");
+
+
+});
