@@ -25,8 +25,6 @@ test.after.always((t) => {
 
 test.beforeEach(async t => {
   // Create a source
-
-  t.context.user = new user({email: "Testemail@gmail.com", username: "Test_User", password: "Test_Password"})
   t.context.sources = new sources({name: "Test_Sources", owner: mongoose.Types.ObjectId(),
   type: "Test_Type", url: "Test_Url", login: "Test_Login", 
   passcode: "Test_Passcode", vhost: "Test_Vhost"});
@@ -80,7 +78,7 @@ test('GET /sources with no sources return correct response and status code and t
 * Tests for create-source
 */
 test('POST /create-source return correct statusCode and success', async t => {
-  const sourceJson = {json: {name: t.context.sources,id: t.context.token}};
+  const sourceJson = {json: {name: "new Source",id: t.context.sourcesid}};
   const {body, statusCode} = await t.context.got.post(`sources/create-source?token=${t.context.token}`,sourceJson);
 
   // Test for the correct values
@@ -89,7 +87,7 @@ test('POST /create-source return correct statusCode and success', async t => {
 });
 
 test('POST /create-source with duplicate name', async t => {
-  const sourceJson = {json: {name: t.context.sources.name,id: t.context.token}};
+  const sourceJson = {json: {name: t.context.sources.name,id: t.context.sources.id}};
   const {body, statusCode} = await t.context.got.post(`sources/create-source?token=${t.context.token}`,sourceJson);
 
   // Test for the correct values
@@ -150,7 +148,7 @@ test('POST /change-source with same name', async t => {
 * Tests for delete-source
 */
 test('POST /delete-source return correct statusCode and success', async t => {
-  const sourceJson = {json: {token: t.context.token,id: t.context.sources.id}};
+  const sourceJson = {json: {id: t.context.sources.id}};
   const {body, statusCode} = await t.context.got.post(`sources/delete-source?token=${t.context.token}`,sourceJson);
 
   // Test for the correct values
@@ -161,7 +159,7 @@ test('POST /delete-source return correct statusCode and success', async t => {
 
 test('POST /delete-source with invalid id', async t => {
 
-  const sourceJson = {json: {token: 1,id: 1}};
+  const sourceJson = {json: {id: 1}};
   const {body, statusCode} = await t.context.got.post(`sources/delete-source?token=${t.context.token}`,sourceJson);
 
   // Test for the correct values
