@@ -9,7 +9,7 @@ const test = require('ava').default;
 const got = require('got');
 const listen = require('test-listen');
 const sinon = require('sinon');
-const source = require('../src/models/source');
+// const source = require('../src/models/source');
 
 const app = require('../src/index'); 
 
