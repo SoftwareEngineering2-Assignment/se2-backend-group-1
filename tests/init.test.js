@@ -27,9 +27,7 @@ test.after.always((t) => {
   t.context.server.close();
 });
 
-/*
-* Test for utilities/mailer/password
-*/
+// Testsfor utilities/mailer/password
 test('Test for utilities/mailer/password', (t) => {
   // Initialize token and email
   const token = 'hello2000';
@@ -41,9 +39,7 @@ test('Test for utilities/mailer/password', (t) => {
   t.true(email.includes(token));
 });
 
-/*
-* Test for utilities/mailer/send
-*/
+// Testsfor utilities/mailer/send
 test('Test for utilities/mailer/send', async (t) => {
   const to = 'test@example.com';
   const subject = 'Test_Email';
@@ -54,9 +50,7 @@ test('Test for utilities/mailer/send', async (t) => {
   t.pass();
 });
 
-/*
-* Test for utilities/authentication/helpers
-*/
+// Testsfor utilities/authentication/helpers
 test('Test /authentication/helpers generate a hashed password', t => {
   const password = 'helloworld';
   const hashedPassword = passwordDigest(password);
@@ -68,9 +62,7 @@ test('Test /authentication/helpers generate a hashed password', t => {
 });
 
 
-/*
-* Test for middlewares/authorization
-*/
+// Testsfor middlewares/authorization
 test('Test authorization error if token is missing', (t) => {
   const req = {};
   const res = {};
@@ -120,9 +112,7 @@ test('Test authorization if token is invalid', (t) => {
 // });
 
 
-/*
-* Test for middlewares/error
-*/
+// Testsfor middlewares/error
 test('Test error for when the error has status 500 or NODE_END is not production', (t) => {
   // Initialize the inputs of error and setting their status to 500
   // and NODE_ENV to development and then calling the error function.
@@ -138,9 +128,7 @@ test('Test error for when the error has status 500 or NODE_END is not production
 });
 
 
-/*
-* Test for middlewares/validation
-*/
+// Testsfor middlewares/validation
 test('Test validation when body is valid', async (t) => {
   const req = {body: {username: 'username',email: 'panos@gmail.com',password: 'password'}};
   const res = {};

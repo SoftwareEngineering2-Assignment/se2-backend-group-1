@@ -1,5 +1,4 @@
 require('dotenv').config();
-// process.env.PORT = 3001;
 const http = require('node:http');
 const test = require('ava').default;
 const got = require('got');
@@ -45,12 +44,7 @@ test.afterEach.always(async t => {
   user.findByIdAndDelete(user._id);
 });
 
-
-
-/*
-* Tests for get /dashboards. One test for a correct given token, one for a token with no dashboards in it
-* and one for when an error happens.  
-*/ 
+// Tests for get /dashboards. One test for a correct given token, one for a token with no dashboards in it and one for when an error happens.  
 test('GET /dashboards returns correct response and status code and type of body', async t => {
   const {body, statusCode} = await t.context.got(`dashboards/dashboards?token=${t.context.token}`);
 
@@ -63,10 +57,7 @@ test('GET /dashboards returns correct response and status code and type of body'
   name: 'Test_Dashboard', views: 10});
 });
 
-
-/*
-* Tests for create-dashboard
-*/
+// Tests for create-dashboard
 test('POST /create-dashboard return correct statusCode and success', async t => {
   const dashboardJson = {json: {name: t.context.dashboard,id: t.context.token}};
   const {body, statusCode} = await t.context.got.post(`dashboards/create-dashboard?token=${t.context.token}`,dashboardJson);
@@ -85,11 +76,7 @@ test('POST /create-dashboard with duplicate name', async t => {
   t.deepEqual(body, {status: 409,message: 'A dashboard with that name already exists.'});
 });
 
-
-
-/*
-* Tests for delete-dashboard
-*/
+// Tests for delete-dashboard
 test('POST /delete-dashboard return correct statusCode and success', async t => {
   const dashboardJson = {json: {id: t.context.dashboard.id}};
   const {body, statusCode} = await t.context.got.post(`dashboards/delete-dashboard?token=${t.context.token}`,dashboardJson);
@@ -110,11 +97,7 @@ test('POST /delete-dashboard with invalid id', async t => {
   t.deepEqual(body, {status: 409,message: 'The selected dashboard has not been found.'});
 });
 
-
-
-/*
-* Tests for dashboard
-*/
+// Tests for dashboard
 test('GET /dashboard return correct statusCode and body', async t => {
   t.context.sources = new sources({name: "Test_Sources", owner: t.context.dashboard.owner,
   type: "Test_Type", url: "Test_Url", login: "Test_Login", 
@@ -143,11 +126,7 @@ test('GET /dashboard with invalid id return correct statusCode, body and message
   t.deepEqual(body, {status: 409,message: 'The selected dashboard has not been found.'});
 });
 
-
-
-/*
-* Tests for save-dashboard
-*/
+// Tests for save-dashboard
 test('POST /save-dashboard return correct statusCode and body', async t => {
   const dashboardJson = {json: {id: t.context.dashboard.id, layout: {}, items: [], nextId: 1}};
   const {body, statusCode} = await t.context.got.post(`dashboards/save-dashboard?token=${t.context.token}`,dashboardJson);
@@ -166,11 +145,7 @@ test('POST /save-dashboard with invalid id return correct statusCode, body and m
   t.deepEqual(body, {status: 409, message: 'The selected dashboard has not been found.'});
 });
 
-
-
-/*
-* Tests for clone-dashboard
-*/
+// Tests for clone-dashboard
 test('POST /clone-dashboard return correct statusCode and body', async t => {
   const dashboardJson = {json: {dashboardId: t.context.dashboard.id,name: 'New_Dashboard'}};
   const {body, statusCode} = await t.context.got.post(`dashboards/clone-dashboard?token=${t.context.token}`,dashboardJson);
@@ -190,11 +165,7 @@ test('POST /clone-dashboard with duplicate name return correct statusCode and bo
   t.deepEqual(body, {status: 409, message: 'A dashboard with that name already exists.'});
 });
 
-
-
-/*
-* Tests for check-password-needed
-*/
+// Tests for check-password-needed
 test('POST /check-password-needed with valid user and dashboardId', async t => {
   const checkDashboard = await dashboard.create({name: 'check_dashboard',password: 'hellothere',shared: true,owner: t.context.user.id});
   const dashboardJson = {json: {user: t.context.user, dashboardId: checkDashboard.id}};
@@ -240,9 +211,7 @@ test('POST /check-password-needed not shared', async t => {
 // });
 
 
-/*
-* Test for check-password
-*/
+// Testsfor check-password
 // test('POST /check-password with valid password and dashboardId', async t => {
 //   const checkDashboard = await dashboard.create({name: 'check_dashboard',password: 'hellothere',shared: false,owner: t.context.user.id});
 //   const dashboardJson = {json: {password: checkDashboard.password, dashboardId: checkDashboard.id}};
@@ -269,10 +238,7 @@ test('POST /check-password dashboard with wrong password', async t => {
   t.deepEqual(body, {success: true, correctPassword: false})
 });
 
-
-/*
-* Test for dashboard share
-*/
+// Testsfor dashboard share
 test('POST /share-dashboard valid dashboard id', async t => {
   const dashboardJson = {json: {dashboardId: t.context.dashboard.id}};
   const {body, statusCode} = await t.context.got.post(`dashboards/share-dashboard?token=${t.context.token}`,dashboardJson);
@@ -291,9 +257,7 @@ test('POST /share-dashboard invalid dashboard id', async t => {
 });
 
 
-/*
-* Test for dashboard share
-*/
+// Testsfor dashboard share
 test('POST /change-password valid dashboard id', async t => {
   const dashboardJson = {json: {dashboardId: t.context.dashboard.id, password: "new password"}};
   const {body, statusCode} = await t.context.got.post(`dashboards/change-password?token=${t.context.token}`,dashboardJson);
@@ -310,9 +274,8 @@ test('POST /change-password invalid dashboard id', async t => {
     message: 'The specified dashboard has not been found.'
   })
 });
-/*
-* Test for Error handlers
-*/
+
+// Testsfor Error handlers
 // test('GET /dashboards error handler', async (t) => {
 //   // Create a new dashboard
 //   await dashboard.create({name: 'Test Dashboard',layout: [],items: {},nextId: 1,owner: user._id});
