@@ -1,7 +1,7 @@
 /* eslint-disable import/no-unresolved */
 /*
 * Import .env, node:http, ava, got, test-listen and helpers from utilities for the tests.
-*/ 
+*/  
 require('dotenv').config();
 
 const http = require('node:http');
@@ -11,8 +11,7 @@ const listen = require('test-listen');
 const sinon = require('sinon');
 const source = require('../src/models/source');
 
-const app = require('../src/index');
-const {jwtSign} = require('../src/utilities/authentication/helpers');
+const app = require('../src/index'); 
 
 test.before(async (t) => {
   t.context.server = http.createServer(app);
