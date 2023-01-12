@@ -10,7 +10,6 @@ const got = require('got');
 const listen = require('test-listen');
 
 const app = require('../src/index');
-const {jwtSign} = require('../src/utilities/authentication/helpers');
 const password = require('../src/utilities/mailer/password');
 const sendE = require('../src/utilities/mailer/send');
 const {passwordDigest} = require('../src/utilities/authentication/helpers');
