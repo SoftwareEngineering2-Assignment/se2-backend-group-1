@@ -9,6 +9,7 @@ const {jwtSign} = require('../src/utilities/authentication/helpers');
 const sources = require('../src/models/source');
 const user = require('../src/models/user'); 
 //const sinon = require('sinon'); 
+
 test.before(async (t) => {
   t.context.server = http.createServer(app);
   t.context.prefixUrl = await listen(t.context.server);
@@ -18,7 +19,6 @@ test.before(async (t) => {
 test.after.always((t) => {
   t.context.server.close();
 });
-
 
 test.beforeEach(async t => {
   // Create a source
@@ -38,7 +38,6 @@ test.afterEach.always(async t => {
   await t.context.sources.delete(); // Delete the source 
   user.findByIdAndDelete(user._id);
 });
-
 
 // Tests for get /sources. One test for a correct given token, one for a token with no sources in it and one for when an error happens.  
 test('GET /sources returns correct response and status code', async (t) => {
@@ -67,7 +66,6 @@ test('GET /sources with no sources return correct response and status code and t
   t.is(body.sources.length, 0);
 });
 
-
 // Tests for create-source
 test('POST /create-source return correct statusCode and success', async t => {
   const sourceJson = {json: {name: "new Source",id: t.context.sourcesid}};
@@ -86,7 +84,6 @@ test('POST /create-source with duplicate name', async t => {
   t.is(statusCode, 200);
   t.deepEqual(body, {status: 409,message: 'A source with that name already exists.'});
 });
-
 
 // Tests for change-source 
 test('POST /change-source return correct statusCode and success', async t => {
@@ -142,9 +139,7 @@ test('POST /delete-source return correct statusCode and success', async t => {
   t.assert(body.success);
 });
 
-
 test('POST /delete-source with invalid id', async t => {
-
   const sourceJson = {json: {id: 1}};
   const {body, statusCode} = await t.context.got.post(`sources/delete-source?token=${t.context.token}`,sourceJson);
 
@@ -156,7 +151,6 @@ test('POST /delete-source with invalid id', async t => {
 // Tests for source if we found the selected source
 test('POST /source return correct statusCode and body', async t => {
   const sourceJson = {json: { name:  t.context.sources.name, owner: t.context.sources.owner, user: {id: 1}}};
-  
   const { body, statusCode } = await t.context.got.post(`sources/source?token=${t.context.token}`,sourceJson);
 
   // Test for the correct values
@@ -166,25 +160,22 @@ test('POST /source return correct statusCode and body', async t => {
               type: t.context.sources.type, url: t.context.sources.url, vhost: t.context.sources.vhost});
 });
 
-
 // Tests for source if the  selected source has not been found
 test('POST /source source not found', async t => {
   const sourceJson = {json: { name:  t.context.sources.name, owner: "self", user: {id: 1}}};
-  
   const { body, statusCode } = await t.context.got.post(`sources/source?token=${t.context.token}`,sourceJson);
+
   // Test for the correct values
   t.is(statusCode, 200);
   t.deepEqual(body, {status: 409,message: 'The selected source has not been found.'});
 });
 
-
 // Testsfor check-sources. In order to check all the if statments we pass 2 elemnets in the array
 test('POST /check-sources return correct statusCode and success', async t => {
   const sourceJson = {json: { sources: ["TEST", t.context.sources.name] }};
   const {body, statusCode } = await t.context.got.post(`sources/check-sources?token=${t.context.token}`,sourceJson);
+
   // Test for the correct values
   t.is(statusCode, 200);
   t.is(body.newSources[0], "TEST");
-
-
 });
