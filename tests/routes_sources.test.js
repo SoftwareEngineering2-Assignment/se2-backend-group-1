@@ -1,5 +1,4 @@
 require('dotenv').config();
-process.env.PORT = 3001;
 const http = require('node:http');
 const test = require('ava').default;
 const got = require('got');
