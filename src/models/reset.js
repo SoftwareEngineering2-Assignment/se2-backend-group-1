@@ -13,15 +13,8 @@ const ResetSchema = new mongoose.Schema({
     unique: 'A token already exists for that username!',
     lowercase: true
   },
-  token: {
-    type: String,
-    required: true
-  },
-  expireAt: {
-    type: Date,
-    default: Date.now,
-    index: {expires},
-  },
+  token: { type: String, required: true },
+  expireAt: { type: Date, default: Date.now, index:{ expires } },
 });
 
 // Make duplicate errors into regular Mongoose validation errors.
