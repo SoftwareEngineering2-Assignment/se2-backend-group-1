@@ -8,7 +8,7 @@ const http = require('node:http');
 const test = require('ava').default;
 const got = require('got');
 const listen = require('test-listen');
-
+const {jwtSign} = require('../src/utilities/authentication/helpers');
 const app = require('../src/index'); 
 const password = require('../src/utilities/mailer/password');
 const sendE = require('../src/utilities/mailer/send');
@@ -27,7 +27,7 @@ test.after.always((t) => {
   t.context.server.close();
 });
 
-// Testsfor utilities/mailer/password
+// Tests for utilities/mailer/password
 test('Test for utilities/mailer/password', (t) => {
   // Initialize token and email
   const token = 'hello2000';
@@ -39,7 +39,7 @@ test('Test for utilities/mailer/password', (t) => {
   t.true(email.includes(token));
 });
 
-// Testsfor utilities/mailer/send
+// Tests for utilities/mailer/send
 test('Test for utilities/mailer/send', async (t) => {
   const to = 'test@example.com';
   const subject = 'Test_Email';
@@ -50,7 +50,7 @@ test('Test for utilities/mailer/send', async (t) => {
   t.pass();
 });
 
-// Testsfor utilities/authentication/helpers
+// Tests for utilities/authentication/helpers
 test('Test /authentication/helpers generate a hashed password', t => {
   const password = 'helloworld';
   const hashedPassword = passwordDigest(password);
@@ -62,7 +62,7 @@ test('Test /authentication/helpers generate a hashed password', t => {
 });
 
 
-// Testsfor middlewares/authorization
+// Tests for middlewares/authorization
 test('Test authorization error if token is missing', (t) => {
   const req = {};
   const res = {};
@@ -85,6 +85,20 @@ test('Test authorization if token is invalid', (t) => {
   authorization(req, res, next);
 });
 
+test('Test authorization if token is valid', (t) => {
+  const token = jwtSign({id: 1});
+  const req = {
+    headers: { 'x-access-token': `Bearer ${token}` }
+  };
+  const res = {};
+  const next = (data) => {
+    t.is(data, undefined);
+  };
+  authorization(req, res, next);
+  t.is(req.decoded.id, 1);
+});
+
+
 // test('Test authorization if token has expired', (t) => {
 //   const req = {
 //     query: { token: 'expired-token' },
@@ -98,21 +112,9 @@ test('Test authorization if token is invalid', (t) => {
 //   authorization(req, res, next);
 // });
 
-// test('Test authorization if token is valid', (t) => {
-//   const token = jwtSign({id: 21});
-//   const req = {
-//     query: { token: token },
-//     headers: {}
-//   };
-//   const res = {};
-//   const next = () => {
-//     t.is(req.decoded, 'decoded-token');
-//   };
-//   authorization(req, res, next);
-// });
 
 
-// Testsfor middlewares/error
+// Tests for middlewares/error
 test('Test error for when the error has status 500 or NODE_END is not production', (t) => {
   // Initialize the inputs of error and setting their status to 500
   // and NODE_ENV to development and then calling the error function.
@@ -128,7 +130,7 @@ test('Test error for when the error has status 500 or NODE_END is not production
 });
 
 
-// Testsfor middlewares/validation
+// Tests for middlewares/validation
 test('Test validation when body is valid', async (t) => {
   const req = {body: {username: 'username',email: 'panos@gmail.com',password: 'password'}};
   const res = {};
@@ -158,3 +160,5 @@ test('Test validation when no password', async (t) => {
   };
   await validation(req, res, next, 'register');
 });
+
+
