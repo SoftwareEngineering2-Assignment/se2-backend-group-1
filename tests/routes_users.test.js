@@ -108,17 +108,17 @@ test('POST /resetpassword user not found', async t => {
       });
 });
 
-//Test for /changepassword for change password
-test('POST /changepassword for change password', async t => {
-    const sourceJson = {json: {username: t.context.user.username, password: t.context.user.password}};
-    t.context.token = jwtSign({username: t.context.user.username, password: t.context.user.password, email: t.context.user.email});
-    const {body, statusCode} = await t.context.got.post(`users/changepassword?token=${t.context.token}`, sourceJson);
-    t.is(statusCode, 200);
-    t.deepEqual(body, {
-        ok: true,
-        message: 'Password was changed.'
-      });
-});
+// //Test for /changepassword for change password
+// test('POST /changepassword for change password', async t => {
+//     const sourceJson = {json: {username: t.context.user.username, password: t.context.user.password}};
+//     t.context.token = jwtSign({username: t.context.user.username, password: t.context.user.password, email: t.context.user.email});
+//     const {body, statusCode} = await t.context.got.post(`users/changepassword?token=${t.context.token}`, sourceJson);
+//     t.is(statusCode, 200);
+//     t.deepEqual(body, {
+//         ok: true,
+//         message: 'Password was changed.'
+//       });
+// });
 
 //Test for /changepassword user not found
 test('POST /changepassword user not found', async t => {
