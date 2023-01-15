@@ -7,6 +7,7 @@ const listen = require('test-listen');
 const app = require('../src/index');
 const User = require('../src/models/user');
 const sinon = require('sinon');
+const {jwtSign} = require('../src/utilities/authentication/helpers');
 
 test.before(async (t) => {
     t.context.server = http.createServer(app);
@@ -19,10 +20,10 @@ test.after.always((t) => {
 });
 
 test.beforeEach(async t => {
-    user = await User.create({
+    t.context.user = await User.create({
         username: 'username',
         password: 'password',
-        email: 'email',
+        email: 'email@example.com',
     });
 });
 
@@ -30,7 +31,7 @@ test.afterEach.always(async t => {
     await User.deleteMany({});
 });
 
-// Create tests for /create
+// Tests for /create for a new user
 test('POST /create Create new user', async t => {
     const sourceJson = {json: {username: 'newuser', password: 'newpassword', email: 'newuser@example.com'}};
     const {body, statusCode} = await t.context.got.post(`users/create?`, sourceJson);
@@ -39,12 +40,12 @@ test('POST /create Create new user', async t => {
     t.assert(body.id);
 
     // Find the user with that name and password
-    const userr = await User.findOne({username: 'newuser'}).select('+newpassword');
-    t.assert(userr);
-    t.is(userr.email, 'newuser@example.com');
+    const user = await User.findOne({username: 'newuser'}).select('+newpassword');
+    t.assert(user);
+    t.is(user.email, 'newuser@example.com');
 });
 
-// Tests for /create for a user with an existing email
+// Test for /create for a user with an existing email
 test('POST /create Error creating a user with existing email', async t => {
     user = await User({username: 'newuser2',password: 'newpassword2', email: 'newuser2@example.com'}).save();
     const sourceJson = {json: {username: 'newuser2', password: 'newpassword2', email: 'newuser2@example.com'}};
@@ -53,3 +54,13 @@ test('POST /create Error creating a user with existing email', async t => {
     t.is(body.status, 409);
     t.is(body.message, 'Registration Error: A user with that e-mail or username already exists.');
 });
+
+
+// Test for /authenticate to authenticate a user
+// test('POST /authenticate Authenticate the user', async t => {
+//     const sourceJson = {json: {username: 'username', password: 'password'}};
+//     const {body, statusCode} = await t.context.got.post(`users/authenticate?`, sourceJson);
+
+//     t.is(statusCode, 200);
+//     t.assert(body.token);
+// });
