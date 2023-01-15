@@ -1,0 +1,55 @@
+require('dotenv').config();
+// const {mongoose} = require('../src/config');
+const http = require('node:http');
+const test = require('ava').default;
+const got = require('got');
+const listen = require('test-listen');
+const app = require('../src/index');
+const User = require('../src/models/user');
+const sinon = require('sinon');
+
+test.before(async (t) => {
+    t.context.server = http.createServer(app);
+    t.context.prefixUrl = await listen(t.context.server);
+    t.context.got = got.extend({http2: true, throwHttpErrors: false, responseType: 'json', prefixUrl: t.context.prefixUrl});
+});
+  
+test.after.always((t) => {
+    t.context.server.close();
+});
+
+test.beforeEach(async t => {
+    user = await User.create({
+        username: 'username',
+        password: 'password',
+        email: 'email',
+    });
+});
+
+test.afterEach.always(async t => {
+    await User.deleteMany({});
+});
+
+// Create tests for /create
+test('POST /create Create new user', async t => {
+    const sourceJson = {json: {username: 'newuser', password: 'newpassword', email: 'newuser@example.com'}};
+    const {body, statusCode} = await t.context.got.post(`users/create?`, sourceJson);
+    t.is(statusCode, 200);
+    t.assert(body.success);
+    t.assert(body.id);
+
+    // Find the user with that name and password
+    const userr = await User.findOne({username: 'newuser'}).select('+newpassword');
+    t.assert(userr);
+    t.is(userr.email, 'newuser@example.com');
+});
+
+// Tests for /create for a user with an existing email
+test('POST /create Error creating a user with existing email', async t => {
+    user = await User({username: 'newuser2',password: 'newpassword2', email: 'newuser2@example.com'}).save();
+    const sourceJson = {json: {username: 'newuser2', password: 'newpassword2', email: 'newuser2@example.com'}};
+    const {body, statusCode} = await t.context.got.post(`users/create?`, sourceJson);
+    t.is(statusCode, 200);
+    t.is(body.status, 409);
+    t.is(body.message, 'Registration Error: A user with that e-mail or username already exists.');
+});
