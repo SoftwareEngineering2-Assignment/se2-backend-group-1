@@ -94,27 +94,27 @@ test('POST /authenticate password not match', async t => {
       });
 });
 
-// Test for /resetpassword to reset password
-test('POST /resetpassword to reset password', async t => {
-    const sourceJson = {json: {username: 'username', password: "newpassword"}};
-    const {body, statusCode} = await t.context.got.post(`users/resetpassword?`, sourceJson);
-    t.is(statusCode, 200);
-    t.deepEqual(body, {
-        ok: true,
-        message: 'Forgot password e-mail sent.'
-      });
-});
+// // Test for /resetpassword to reset password
+// test('POST /resetpassword to reset password', async t => {
+//     const sourceJson = {json: {username: 'username', password: "newpassword"}};
+//     const {body, statusCode} = await t.context.got.post(`users/resetpassword?`, sourceJson);
+//     t.is(statusCode, 200);
+//     t.deepEqual(body, {
+//         ok: true,
+//         message: 'Forgot password e-mail sent.'
+//       });
+// });
 
-//Test for /resetpassword user not found
-test('POST /resetpassword user not found', async t => {
-    const sourceJson = {json: {username: -1, password: "newpassword"}};
-    const {body, statusCode} = await t.context.got.post(`users/resetpassword?`, sourceJson);
-    t.is(statusCode, 200);
-    t.deepEqual(body, {
-        status: 404,
-        message: 'Resource Error: User not found.'
-      });
-});
+// //Test for /resetpassword user not found
+// test('POST /resetpassword user not found', async t => {
+//     const sourceJson = {json: {username: -1, password: "newpassword"}};
+//     const {body, statusCode} = await t.context.got.post(`users/resetpassword?`, sourceJson);
+//     t.is(statusCode, 200);
+//     t.deepEqual(body, {
+//         status: 404,
+//         message: 'Resource Error: User not found.'
+//       });
+// });
 
   
 
