@@ -126,8 +126,8 @@ test('POST /changepassword user not found', async t => {
     const {body, statusCode} = await t.context.got.post(`users/changepassword?token=${t.context.token}`, sourceJson);
     t.is(statusCode, 200);
     t.deepEqual(body, {
-    status: 404,
-    message: 'Resource Error: User not found.'
+        status: 404,
+        message: 'Resource Error: User not found.'
   });
 });
 
@@ -161,7 +161,6 @@ test('POST /resetpassword user not found', async t => {
 test('POST /resetpassword to reset password', async (t) => {
     const sourceJson = {json: {username: 'username'}};
     const {body, statusCode} = await t.context.got.post(`users/resetpassword?`, sourceJson);
-    console.log(body)
     t.is(statusCode, 200);
     t.deepEqual(body, {
         ok: true,
