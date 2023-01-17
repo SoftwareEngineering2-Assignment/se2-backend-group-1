@@ -6,7 +6,6 @@ const listen = require('test-listen');
 const app = require('../src/index');
 const User = require('../src/models/user');
 const {jwtSign} = require('../src/utilities/authentication/helpers');
-const {mongoose} = require('../src/config');
 
 let user;
 test.before(async (t) => {
@@ -28,20 +27,6 @@ test.after.always((t) => {
                 console.log("Successful deletion");
         }); 
 });
-
-
-  
-// test.beforeEach(async t => {
-//     user = await User.create({
-//         username: 'username',
-//         password: 'password',
-//         email: 'email@example.com',
-//     });
-// });
-
-// test.afterEach.always(async t => {
-//     await User.deleteMany({});
-// });
 
 // Tests for /create for a new user
 test('POST /create Create new user', async t => {
