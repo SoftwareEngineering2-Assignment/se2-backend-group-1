@@ -8,7 +8,6 @@ const app = require('../src/index');
 const {jwtSign} = require('../src/utilities/authentication/helpers');
 const sources = require('../src/models/source');
 const user = require('../src/models/user'); 
-//const sinon = require('sinon'); 
 
 test.before(async (t) => {
   t.context.server = http.createServer(app);
@@ -27,11 +26,6 @@ test.beforeEach(async t => {
   passcode: "Test_Passcode", vhost: "Test_Vhost"});
   await t.context.sources.save(); // Save it
   t.context.token = jwtSign({id: t.context.sources.owner});
-
-  // Clear history
-  //sinon.resetHistory();
-  //sinon.restore();
-  //sinon.reset();
 });
 
 test.afterEach.always(async t => {

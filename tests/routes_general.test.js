@@ -3,14 +3,11 @@
 * Import .env, node:http, ava, got, test-listen and helpers from utilities for the tests.
 */  
 require('dotenv').config();
-
 const http = require('node:http');
 const test = require('ava').default;
 const got = require('got');
 const listen = require('test-listen');
 const sinon = require('sinon');
-// const source = require('../src/models/source');
-
 const app = require('../src/index'); 
 
 test.before(async (t) => {
@@ -32,7 +29,6 @@ test('GET /statistics returns correct response and status code', async (t) => {
     t.is(statusCode, 200);
 });
 
-
 /*
 * Testing general/test-url  
 */
@@ -53,8 +49,6 @@ test('GET /test-url without a URL query parameter returns 500 and active: false'
   t.is(body.status, 500);
   t.is(body.active, false);
 });
-
-
 
 /*
 * Testing general/test-url-request
@@ -90,18 +84,3 @@ test('GET /test-url-request with an invalid URL returns a 500 error', async (t) 
     t.is(body.status, 500);
     t.assert(body);
 });
-
-
-
-/*
-* Testing general/statistics error handler  (it throws an error with .stub and i dont know how to fix it)
-*/
-// test('GET /statistics error handler', async (t) => {
-//   // Creates a fake implementation of the find method of the dashboard object that throws an error with a message
-//   // when called. Then replaces the original implementation of the find method with the fake implementation.
-//   const findStub = sinon.stub(source, 'countDocuments').throws(new Error('Internal server error occurred'));  
-//   const {statusCode} = await t.context.got(`general/statistics`);
-//   t.is(statusCode, 404);
-//   findStub.restore();
-// });
-

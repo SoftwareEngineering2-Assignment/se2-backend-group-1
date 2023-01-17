@@ -44,17 +44,7 @@ test.afterEach.always(async t => {
     user.findByIdAndDelete(user._id);
 });
 
-
-// Tests for check-password
-// test('POST /check-password with valid password and dashboardId', async t => {
-//   const checkDashboard = await dashboard.create({name: 'check_dashboard',password: 'hellothere',shared: false,owner: t.context.user.id});
-//   const dashboardJson = {json: {password: checkDashboard.password, dashboardId: checkDashboard.id}};
-//   const {body, statusCode} = await t.context.got.post(`dashboards/check-password?token=${t.context.token}`,dashboardJson);
-//   t.is(statusCode, 200);
-//   t.deepEqual(body, {success: true, correctPassword: true, owner: t.context.dashboard.owner,
-//   dashboard: {name: t.context.dashboard.name, layout: t.context.dashboard.layout, items: t.context.dashboard.items}})
-// });
-
+// Test for /check-password with invalid id'
 test('POST /check-password dashboard invalid id', async t => {
     const dashboardJson = {json: {dashboardId: -1, password: t.context.dashboard.password}};
     const {body, statusCode} = await t.context.got.post(`dashboards/check-password?token=${t.context.token}`,dashboardJson);
@@ -65,6 +55,7 @@ test('POST /check-password dashboard invalid id', async t => {
     })
 });
 
+// Test /check-password with wrong password
 test('POST /check-password dashboard with wrong password', async t => {
     const dashboardJson = {json: {dashboardId: t.context.dashboard.id, password: ""}};
     const {body, statusCode} = await t.context.got.post(`dashboards/check-password?token=${t.context.token}`,dashboardJson);
@@ -72,7 +63,7 @@ test('POST /check-password dashboard with wrong password', async t => {
     t.deepEqual(body, {success: true, correctPassword: false})
 });
 
-// Tests for dashboard share
+// Tests for /share-dashboard with valid dashboard id
 test('POST /share-dashboard valid dashboard id', async t => {
     const dashboardJson = {json: {dashboardId: t.context.dashboard.id}};
     const {body, statusCode} = await t.context.got.post(`dashboards/share-dashboard?token=${t.context.token}`,dashboardJson);
@@ -80,6 +71,7 @@ test('POST /share-dashboard valid dashboard id', async t => {
     t.deepEqual(body, {success: true, shared: !t.context.dashboard.shared})
 });
 
+// Tests for /share-dashboard with invalid dashboard id
 test('POST /share-dashboard invalid dashboard id', async t => {
     const dashboardJson = {json: {dashboardId: -1}};
     const {body, statusCode} = await t.context.got.post(`dashboards/share-dashboard?token=${t.context.token}`,dashboardJson);
@@ -90,7 +82,7 @@ test('POST /share-dashboard invalid dashboard id', async t => {
     })
 });
 
-// Tests for dashboard share
+// Tests for /change-password with valid dashboard id
 test('POST /change-password valid dashboard id', async t => {
     const dashboardJson = {json: {dashboardId: t.context.dashboard.id, password: "new password"}};
     const {body, statusCode} = await t.context.got.post(`dashboards/change-password?token=${t.context.token}`,dashboardJson);
@@ -98,6 +90,7 @@ test('POST /change-password valid dashboard id', async t => {
     t.assert(body.success);
 });
 
+// Tests for /change-password with invalid dashboard id
 test('POST /change-password invalid dashboard id', async t => {
     const dashboardJson = {json: {dashboardId: -1, password: "new password"}};
     const {body, statusCode} = await t.context.got.post(`dashboards/change-password?token=${t.context.token}`,dashboardJson);

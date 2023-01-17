@@ -50,7 +50,7 @@ test('GET /dashboards returns correct response and status code and type of body'
   name: 'Test_Dashboard', views: 10});
 });
 
-// Tests for create-dashboard
+// Tests for create-dashboard 
 test('POST /create-dashboard return correct statusCode and success', async t => {
   const dashboardJson = {json: {name: t.context.dashboard,id: t.context.token}};
   const {body, statusCode} = await t.context.got.post(`dashboards/create-dashboard?token=${t.context.token}`,dashboardJson);
@@ -159,41 +159,22 @@ test('POST /clone-dashboard with duplicate name return correct statusCode and bo
 test('POST /check-password-needed with valid user and dashboardId', async t => {
   const checkDashboard = await dashboard.create({name: 'check_dashboard',password: 'hellothere',shared: true,owner: t.context.user.id});
   const dashboardJson = {json: {user: t.context.user, dashboardId: checkDashboard.id}};
-  const {body, statusCode} = await t.context.got.post('dashboards/check-password-needed?token=${t.context.token}',dashboardJson);
+  const {body, statusCode} = await t.context.got.post(`dashboards/check-password-needed?token=${t.context.token}`,dashboardJson);
   t.is(statusCode, 200);
   t.deepEqual(body, {success: true, owner: '', shared: true, passwordNeeded: true});
 });
 
 test('POST /check-password-needed Dashboard not found', async t => {
   const dashboardJson = {json: {user: t.context.user, dashboardId: -1}};
-  const {body, statusCode} = await t.context.got.post('dashboards/check-password-needed?token=${t.context.token}',dashboardJson);
+  const {body, statusCode} = await t.context.got.post(`dashboards/check-password-needed?token=${t.context.token}`,dashboardJson);
   t.is(statusCode, 200);
   t.deepEqual(body, {status: 409, message: 'The specified dashboard has not been found.'});
 });
 
-// test('POST /check-password-needed Dashboard exists', async t => {
-//   const checkDashboard = await dashboard.create({name: 'check_dashboard',password: 'hellothere',shared: false,owner: t.context.user.id});
-//   const dashboardJson = {json: { dashboardId: checkDashboard.id,user: {id: checkDashboard.owner}}};
-//   const {body, statusCode} = await t.context.got.post('dashboards/check-password-needed?token=${t.context.token}',dashboardJson);
-//   t.is(statusCode, 200);
-//   t.deepEqual(body, {success: true, owner: 'self', shared: t.context.dashboard.shared,
-//     hasPassword: checkDashboard.password !== null, 
-//     dashboard: {items: {}, name: checkDashboard.name,
-//     layout: [], owner:t.context.user.id}});
-// });
-
 test('POST /check-password-needed not shared', async t => {
   const checkDashboard = await dashboard.create({name: 'check_dashboard',password: 'hellothere',shared: false,owner: t.context.user.id});
   const dashboardJson = {json: {user: t.context.user, dashboardId: checkDashboard.id}};
-  const {body, statusCode} = await t.context.got.post('dashboards/check-password-needed?token=${t.context.token}',dashboardJson);
+  const {body, statusCode} = await t.context.got.post(`dashboards/check-password-needed?token=${t.context.token}`,dashboardJson);
   t.is(statusCode, 200);
   t.deepEqual(body,{success: true,owner: '',shared: false});
 });
-
-// test('POST /check-password-needed no password === null', async t => {
-//   const checkDashboard = await dashboard.create({name: 'check_dashboard',shared: true,owner: t.context.dashboard.owner});
-//   const dashboardJson = {json: {user: t.context.token, dashboardId: checkDashboard.id}};
-//   const {body, statusCode} = await t.context.got.post('dashboards/check-password-needed?token=${t.context.token}',dashboardJson);
-//   t.is(statusCode, 200);
-//   t.deepEqual(body,{success: true, owner: '', shared: true, passwordNeeded: false});
-// });
