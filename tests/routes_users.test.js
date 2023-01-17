@@ -145,16 +145,16 @@ test('POST /changepassword token has expired', async t => {
 
 
 
-// //Test for /resetpassword user not found
-// test('POST /resetpassword user not found', async t => {
-//     const sourceJson = {json: {username: -1, password: "newpassword"}};
-//     const {body, statusCode} = await t.context.got.post(`users/resetpassword?`, sourceJson);
-//     t.is(statusCode, 200);
-//     t.deepEqual(body, {
-//         status: 404,
-//         message: 'Resource Error: User not found.'
-//       });
-// });
+//Test for /resetpassword user not found
+test('POST /resetpassword user not found', async t => {
+    const sourceJson = {json: {username: -1, password: "newpassword"}};
+    const {body, statusCode} = await t.context.got.post(`users/resetpassword?`, sourceJson);
+    t.is(statusCode, 200);
+    t.deepEqual(body, {
+        status: 404,
+        message: 'Resource Error: User not found.'
+      });
+});
 
 
 // // Test for /resetpassword to reset password

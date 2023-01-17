@@ -27,7 +27,7 @@ jobs:
 
       # Runs all the tests serially
       - name: Run all the tests 
-        run: npm test -- --serial
+        run: npm test tests/routes_users.test.js -- --serial
 
 
       # Run all the tests individually
