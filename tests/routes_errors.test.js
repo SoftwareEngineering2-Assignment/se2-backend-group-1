@@ -8,16 +8,27 @@ const app = require('../src/index');
 const Source  = require('../src/models/source');
 const mongoose = require('mongoose');
 const {jwtSign} = require('../src/utilities/authentication/helpers');
-const user = require('../src/models/user'); 
+const User = require('../src/models/user'); 
+let user;
 
 test.before(async (t) => {
-  t.context.server = http.createServer(app);
-  t.context.prefixUrl = await listen(t.context.server);
-  t.context.got = got.extend({http2: true, throwHttpErrors: false, responseType: 'json', prefixUrl: t.context.prefixUrl});
-});
+    t.context.server = http.createServer(app);
+    t.context.prefixUrl = await listen(t.context.server);
+    t.context.got = got.extend({http2: true, throwHttpErrors: false, responseType: 'json', prefixUrl: t.context.prefixUrl});
+    user = await User.create({
+        username: 'username',
+        password: 'password',
+        email: 'email@example.com',
+      });
+    });
 
 test.after.always((t) => {
-  t.context.server.close();
+    t.context.server.close();
+    User.deleteMany({}, 
+        function(err){
+            if(err) console.log(err);
+                console.log("Successful deletion");
+        }); 
 });
 
 test.beforeEach(async t => {
@@ -36,7 +47,6 @@ test.beforeEach(async t => {
   
 test.afterEach.always(async t => {
     await t.context.source.delete(); // Delete the source 
-    user.findByIdAndDelete(user._id);
 });
 
 // Testing general/statistics error handler  (it throws an error with .stub and i dont know how to fix it)
@@ -64,7 +74,7 @@ test('POST /create-source error handler', async (t) => {
     // Creates a fake implementation of the find method of the dashboard object that throws an error with a message
     // when called. Then replaces the original implementation of the find method with the fake implementation.
     const findStub = sinon.stub(Source, 'findOne').throws(new Error('Internal server error occurred'));  
-    const sourceJson = {json: {name: "new Source",id: t.context.sourcesid}};
+    const sourceJson = {json: {name: "new Source", id: t.context.sourcesid}};
     const {statusCode} = await t.context.got.post(`sources/create-source?token=${t.context.token}`,sourceJson);
 
     t.is(statusCode, 404);
@@ -76,7 +86,7 @@ test('POST /change-source error handler', async (t) => {
     // Creates a fake implementation of the find method of the dashboard object that throws an error with a message
     // when called. Then replaces the original implementation of the find method with the fake implementation.
     const findStub = sinon.stub(Source, 'findOne').throws(new Error('Internal server error occurred'));  
-    const sourceJson = {json: {name: "new Source",id: t.context.sourcesid}};
+    const sourceJson = {json: {name: "new Source", id: t.context.sourcesid}};
     const {statusCode} = await t.context.got.post(`sources/change-source?token=${t.context.token}`,sourceJson);
 
     t.is(statusCode, 404);
@@ -88,7 +98,7 @@ test('POST /delete-source error handler', async (t) => {
     // Creates a fake implementation of the find method of the dashboard object that throws an error with a message
     // when called. Then replaces the original implementation of the find method with the fake implementation.
     const findStub = sinon.stub(Source, 'findOneAndRemove').throws(new Error('Internal server error occurred'));  
-    const sourceJson = {json: {name: "new Source",id: t.context.sourcesid}};
+    const sourceJson = {json: {name: "new Source", id: t.context.sourcesid}};
     const {statusCode} = await t.context.got.post(`sources/delete-source?token=${t.context.token}`,sourceJson);
     t.is(statusCode, 404);
     findStub.restore();
@@ -99,7 +109,7 @@ test('POST /source error handler', async (t) => {
     // Creates a fake implementation of the find method of the dashboard object that throws an error with a message
     // when called. Then replaces the original implementation of the find method with the fake implementation.
     const findStub = sinon.stub(Source, 'findOne').throws(new Error('Internal server error occurred'));  
-    const sourceJson = {json: {name: "new Source",id: t.context.sourcesid}};
+    const sourceJson = {json: {name: "new Source", id: t.context.sourcesid}};
     const {statusCode } = await t.context.got.post(`sources/source?token=${t.context.token}`,sourceJson);
     t.is(statusCode, 404);
     findStub.restore();
@@ -110,9 +120,58 @@ test('POST /check-sources error handler', async (t) => {
     // Creates a fake implementation of the find method of the dashboard object that throws an error with a message
     // when called. Then replaces the original implementation of the find method with the fake implementation.
     const findStub = sinon.stub(Source, 'findOne').throws(new Error('Internal server error occurred'));  
-    const sourceJson = {json: {name: "new Source",id: t.context.sourcesid}};
+    const sourceJson = {json: {name: "new Source", id: t.context.sourcesid}};
     const {statusCode } = await t.context.got.post(`sources/check-sources?token=${t.context.token}`,sourceJson);
 
     t.is(statusCode, 404);
+    findStub.restore();
+});
+
+// Testing users/create error handler
+test('POST /create error handler', async (t) => {
+    // Creates a fake implementation of the find method of the dashboard object that throws an error with a message
+    // when called. Then replaces the original implementation of the find method with the fake implementation.
+    const findStub = sinon.stub(User, 'findOne').throws(new Error('Internal server error occurred'));  
+    const sourceJson = {json: {username: 'newuser1', password: 'newpassword1', email: 'newuser1@example.com'}};
+    const {statusCode} = await t.context.got.post(`users/create?`, sourceJson);
+    
+    t.is(statusCode, 500);
+    findStub.restore();
+});
+
+// Testing users/authenticate error handler
+test('POST /authenticate error handler', async (t) => {
+    // Creates a fake implementation of the find method of the dashboard object that throws an error with a message
+    // when called. Then replaces the original implementation of the find method with the fake implementation.
+    const findStub = sinon.stub(User, 'findOne').throws(new Error('Internal server error occurred'));  
+    const sourceJson = {json: {username: 'newuser1', password: 'newpassword1', email: 'newuser1@example.com'}};
+    const {statusCode} = await t.context.got.post(`users/authenticate?`, sourceJson);
+    
+    t.is(statusCode, 500);
+    findStub.restore();
+});
+
+// Testing users/resetpassword error handler
+test('POST /resetpassword error handler', async (t) => {
+    // Creates a fake implementation of the find method of the dashboard object that throws an error with a message
+    // when called. Then replaces the original implementation of the find method with the fake implementation.
+    const findStub = sinon.stub(User, 'findOne').throws(new Error('Internal server error occurred'));  
+    const sourceJson = {json: {username: 'newuser1', password: 'newpassword1', email: 'newuser1@example.com'}};
+    const {statusCode} = await t.context.got.post(`users/resetpassword?`, sourceJson);
+    
+    t.is(statusCode, 500);
+    findStub.restore();
+});
+
+// Testing users/changepassword error handler
+test('POST /changepassword error handler', async (t) => {
+    // Creates a fake implementation of the find method of the dashboard object that throws an error with a message
+    // when called. Then replaces the original implementation of the find method with the fake implementation.
+    const findStub = sinon.stub(User, 'findOne').throws(new Error('Internal server error occurred'));  
+    const sourceJson = {json:{ password: "200oakdf"}};
+    token = jwtSign({username: user.username});
+    const {statusCode} = await t.context.got.post(`users/changepassword?token=${token}`, sourceJson);
+    
+    t.is(statusCode, 500);
     findStub.restore();
 });
