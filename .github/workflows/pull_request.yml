@@ -6,7 +6,7 @@ name: pull_request
 on: pull_request
 
 jobs:
-  push: 
+  ci: 
     env:
       PORT: 3001
       SERVER_SECRET: ${{ secrets.SERVER_SECRET }}
@@ -47,7 +47,7 @@ jobs:
 
   cd: 
     runs-on: ubuntu-latest
-    needs: push
+    needs: ci
     # If the pull request is on main and itw accepted
     if: github.ref == 'refs/heads/main'  && github.event.pull_request.merged == true
     steps: 

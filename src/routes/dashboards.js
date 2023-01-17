@@ -1,33 +1,21 @@
 /*
-* Import express,mongoose and the module middlewares 
+* Import the necessary modules 
 */
 /* eslint-disable max-len */
 const express = require('express');
 const mongoose = require('mongoose');
 const {authorization} = require('../middlewares');
-
-/*
-* Define a middleware router object. 
-*/
 const router = express.Router();
-
-/*
-* Import dashboard and source from module models 
-*/
 const Dashboard = require('../models/dashboard');
 const Source = require('../models/source');
 
-/* 
-* Handling GET/POST requests and use an authorize middleware. If an error occurs during the execution of the following routes handlers, 
-* it will pass control to the next middleware with the error as an argument, for the error to be handled.
-*/
+// Handling GET/POST requests and use an authorize middleware. If an error occurs during the execution of the following routes handlers, 
+// it will pass control to the next middleware with the error as an argument, for the error to be handled.
 
-/*
-* An async function, retrieves the id from the decoded of the request object req. It uses the id value to find all 
-* dashboard s in the database where the owner field matches the id value. Then create an array of objects with id, name
-* and views and assigns it to the dashboards variable. 
-* Then a JSON response is sent to the client with success set to true and the dashboards array as the value of the dashboards field.
-*/
+// An async function, retrieves the id from the decoded of the request object req. It uses the id value to find all 
+// dashboard s in the database where the owner field matches the id value. Then create an array of objects with id, name
+// and views and assigns it to the dashboards variable. 
+// Then a JSON response is sent to the client with success set to true and the dashboards array as the value of the dashboards field.
 router.get('/dashboards',
   authorization,
   async (req, res, next) => {
