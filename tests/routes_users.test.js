@@ -6,8 +6,12 @@ const listen = require('test-listen');
 const app = require('../src/index');
 const User = require('../src/models/user');
 const {jwtSign} = require('../src/utilities/authentication/helpers');
-
 let user;
+
+// Creates an HTTP server using the app variable, which is an Express application.
+// Returns promise resolves to the prefixUrl variable.
+// Extended with options for HTTP2 support, error handling, JSON response type, and the prefixUrl variable.
+// Finally it creates a user
 test.before(async (t) => {
     t.context.server = http.createServer(app);
     t.context.prefixUrl = await listen(t.context.server);
@@ -19,13 +23,10 @@ test.before(async (t) => {
       });
     });
 
+// Closes the server and deletes the users
 test.after.always((t) => {
     t.context.server.close();
-    User.deleteMany({}, 
-        function(err){
-            if(err) console.log(err);
-                console.log("Successful deletion");
-        }); 
+    User.deleteMany({},function(err){}); 
 });
 
 // Tests for /create for a new user

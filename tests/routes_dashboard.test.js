@@ -10,16 +10,21 @@ const dashboard = require('../src/models/dashboard');
 const user = require('../src/models/user');
 const sources = require('../src/models/source');
 
+// Creates an HTTP server using the app variable, which is an Express application.
+// Returns promise resolves to the prefixUrl variable.
+// Extended with options for HTTP2 support, error handling, JSON response type, and the prefixUrl variable.
 test.before(async (t) => {
   t.context.server = http.createServer(app);
   t.context.prefixUrl = await listen(t.context.server);
   t.context.got = got.extend({http2: true, throwHttpErrors: false, responseType: 'json', prefixUrl: t.context.prefixUrl});
 });
 
+// Closes the server
 test.after.always((t) => {
   t.context.server.close();
 });
 
+// Before each test create two dashboards and clear, reset and restore sinon 
 test.beforeEach(async t => {
   // Create a dashboard
   t.context.dashboard = new dashboard({name:'Test_Dashboard',views: 10, shared: false, layout: [],
@@ -32,6 +37,7 @@ test.beforeEach(async t => {
   await t.context.user.save();
 });
 
+// Before each test delete the previous dashboards
 test.afterEach.always(async t => {
   await t.context.dashboard.delete(); // Delete the dashboard 
   user.findByIdAndDelete(user._id);

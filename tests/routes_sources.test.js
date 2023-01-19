@@ -9,16 +9,21 @@ const {jwtSign} = require('../src/utilities/authentication/helpers');
 const sources = require('../src/models/source');
 const user = require('../src/models/user'); 
 
+// Creates an HTTP server using the app variable, which is an Express application.
+// Returns promise resolves to the prefixUrl variable.
+// Extended with options for HTTP2 support, error handling, JSON response type, and the prefixUrl variable.
 test.before(async (t) => {
   t.context.server = http.createServer(app);
   t.context.prefixUrl = await listen(t.context.server);
   t.context.got = got.extend({http2: true, throwHttpErrors: false, responseType: 'json', prefixUrl: t.context.prefixUrl});
 });
 
+// Closes the server
 test.after.always((t) => {
   t.context.server.close();
 });
 
+// Before each test create a source
 test.beforeEach(async t => {
   // Create a source
   t.context.sources = new sources({name: "Test_Sources", owner: mongoose.Types.ObjectId(),
@@ -28,6 +33,7 @@ test.beforeEach(async t => {
   t.context.token = jwtSign({id: t.context.sources.owner});
 });
 
+// After each test delete sources and user
 test.afterEach.always(async t => {
   await t.context.sources.delete(); // Delete the source 
   user.findByIdAndDelete(user._id);

@@ -11,6 +11,10 @@ const {jwtSign} = require('../src/utilities/authentication/helpers');
 const User = require('../src/models/user'); 
 let user;
 
+// Creates an HTTP server using the app variable, which is an Express application.
+// Returns promise resolves to the prefixUrl variable.
+// Extended with options for HTTP2 support, error handling, JSON response type, and the prefixUrl variable.
+// Finally it creates a user
 test.before(async (t) => {
     t.context.server = http.createServer(app);
     t.context.prefixUrl = await listen(t.context.server);
@@ -22,6 +26,7 @@ test.before(async (t) => {
       });
     });
 
+// Closes the server and delets all the users
 test.after.always((t) => {
     t.context.server.close();
     User.deleteMany({}, 
@@ -31,6 +36,7 @@ test.after.always((t) => {
         }); 
 });
 
+// Before each test create a source and clear history of sinon
 test.beforeEach(async t => {
     // Create a source
     t.context.source = new Source({name: "Test_source", owner: mongoose.Types.ObjectId(),
@@ -44,7 +50,8 @@ test.beforeEach(async t => {
     sinon.restore();
     sinon.reset();
 });
-  
+ 
+// After each test delete sources
 test.afterEach.always(async t => {
     await t.context.source.delete(); // Delete the source 
 });
