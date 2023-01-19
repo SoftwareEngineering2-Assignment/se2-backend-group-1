@@ -1,3 +1,6 @@
+/*
+* Import the necessery modules for the tests.
+*/  
 require('dotenv').config();
 const http = require('node:http');
 const test = require('ava').default;
@@ -10,9 +13,9 @@ const dashboard = require('../src/models/dashboard');
 const user = require('../src/models/user');
 const sources = require('../src/models/source');
 
-// Creates an HTTP server using the app variable, which is an Express application.
+// Creates an HTTP, which is an Express application.
 // Returns promise resolves to the prefixUrl variable.
-// Extended with options for HTTP2 support, error handling, JSON response type, and the prefixUrl variable.
+// Extended with options for HTTP2 support, error handling, JSON response type and the prefixUrl variable.
 test.before(async (t) => {
   t.context.server = http.createServer(app);
   t.context.prefixUrl = await listen(t.context.server);
@@ -24,7 +27,7 @@ test.after.always((t) => {
   t.context.server.close();
 });
 
-// Before each test create two dashboards and clear, reset and restore sinon 
+// Before each test create two dashboards and clear sinon 
 test.beforeEach(async t => {
   // Create a dashboard
   t.context.dashboard = new dashboard({name:'Test_Dashboard',views: 10, shared: false, layout: [],

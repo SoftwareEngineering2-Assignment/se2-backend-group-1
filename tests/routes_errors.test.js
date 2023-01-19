@@ -1,3 +1,6 @@
+/*
+* Import the necessery modules for the tests.
+*/  
 require('dotenv').config();
 const http = require('node:http');
 const test = require('ava').default;
@@ -11,10 +14,10 @@ const {jwtSign} = require('../src/utilities/authentication/helpers');
 const User = require('../src/models/user'); 
 let user;
 
-// Creates an HTTP server using the app variable, which is an Express application.
+// Creates an HTTP, which is an Express application.
 // Returns promise resolves to the prefixUrl variable.
-// Extended with options for HTTP2 support, error handling, JSON response type, and the prefixUrl variable.
-// Finally it creates a user
+// Extended with options for HTTP2 support, error handling, JSON response type and the prefixUrl variable.
+// Finally creates a user
 test.before(async (t) => {
     t.context.server = http.createServer(app);
     t.context.prefixUrl = await listen(t.context.server);
@@ -29,11 +32,7 @@ test.before(async (t) => {
 // Closes the server and delets all the users
 test.after.always((t) => {
     t.context.server.close();
-    User.deleteMany({}, 
-        function(err){
-            if(err) console.log(err);
-                console.log("Successful deletion");
-        }); 
+    User.deleteMany({}, function(err){}); 
 });
 
 // Before each test create a source and clear history of sinon

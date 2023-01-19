@@ -1,3 +1,6 @@
+/*
+* Import the necessery modules for the tests.
+*/  
 require('dotenv').config();
 const http = require('node:http');
 const test = require('ava').default;
@@ -9,9 +12,9 @@ const {jwtSign} = require('../src/utilities/authentication/helpers');
 const sources = require('../src/models/source');
 const user = require('../src/models/user'); 
 
-// Creates an HTTP server using the app variable, which is an Express application.
+// Creates an HTTP, which is an Express application.
 // Returns promise resolves to the prefixUrl variable.
-// Extended with options for HTTP2 support, error handling, JSON response type, and the prefixUrl variable.
+// Extended with options for HTTP2, error handling, JSON response type and the prefixUrl variable.
 test.before(async (t) => {
   t.context.server = http.createServer(app);
   t.context.prefixUrl = await listen(t.context.server);
