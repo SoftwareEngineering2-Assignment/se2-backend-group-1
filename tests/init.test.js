@@ -64,7 +64,6 @@ test('Test /authentication/helpers generate a hashed password', t => {
   t.not(hashedPassword, password);
 });
 
-
 // Tests for middlewares/authorization
 test('Test authorization error if token is missing', (t) => {
   const req = {};
