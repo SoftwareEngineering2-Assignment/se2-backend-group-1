@@ -29,7 +29,6 @@ jobs:
       - name: Run all the tests 
         run: npm test -- --serial
 
-
       # Run all the tests individually
       # # Runs the tests on init
       # - name: Run test on init
