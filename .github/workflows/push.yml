@@ -49,9 +49,7 @@ jobs:
       # # Runs the tests on sources
       # - name: Run test on sources
       #   run: npm test tests/routes_sources.test.js
-       
-#       - name: format check
-#         run: npm run format-check
+
       # # Create Linters      
       # - name: Code Linting
       #   run: npm run lint
