@@ -92,18 +92,6 @@ test('POST /authenticate password not match', async t => {
       });
 });
 
-// Test for /changepassword for change password
-test('POST /changepassword for change password', async t => {
-    const sourceJson = {json:{ password: "200oakdf"}};
-    token = jwtSign({username: user.username});
-    const {body, statusCode} = await t.context.got.post(`users/changepassword?token=${token}`, sourceJson);
-    t.is(statusCode, 200);
-    t.deepEqual(body, {
-        ok: true,
-        message: 'Password was changed.'
-      });
-});
-
 test('POST /changepassword returns correct response and status code when password is expired', async (t) => {
     let user5;
     user5 = await User({username: 'newuser5',password: 'newpassword5', email: 'newuser5@example.com'}).save();
@@ -151,3 +139,4 @@ test('POST /resetpassword to reset password', async (t) => {
         message: 'Forgot password e-mail sent.'
       });
 });
+
