@@ -12,15 +12,15 @@ const Dashboard = require('../models/dashboard');
 const Source = require('../models/source');
 
 /* 
-* Handling GET/POST requests. If an error occurs during the execution of the following routes handlers,
-* it will pass control to the next middleware with the error as an argument, for the error to be handled.
+* Handling GET/POST requests. If an error occurs during the execution of the following routes handlers, it will pass control to the next
+* middleware with the error as an argument, for the error to be handled.
 */
 
 /*
-* Count the number of documents in the User, Dashboard, and Source collections, respectively. Sum
-* the views of all dashboards and return the total number of views.
-* After all of the queries have been completed, construct a response object containing the statistical data and
-* sends it back to the client as a JSON object. 
+* Get and assign the url, type, headers, body and params, then use a switch to handle different HTTP request types.
+* If it is a GET/POST/PUT request make a GET/POST/PUT request to the specified url and pass the headers and params as options. 
+* If the request type is none of these, set statusCode to 500 and a message indicating that something went wrong.
+* After that, return a JSON object with status set to the statusCode of the response and a response set to the body of the response.
 */
 router.get('/statistics',
   async (req, res, next) => {
