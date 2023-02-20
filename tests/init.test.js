@@ -128,7 +128,7 @@ test('Test error for when the error has status 500 or NODE_END is not production
           t.is(error.message, 'Error')}}}};
   const next = () => {};
   process.env.NODE_ENV = 'development';
-  error(errorObject, req, res, next);
+  error(errorObject, res);
 });
 
 
