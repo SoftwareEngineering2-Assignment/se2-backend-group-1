@@ -54,7 +54,7 @@ test('GET /dashboards error handler', async (t) => {
   // when called. Then replaces the original implementation of the find method with the fake implementation.
   const findFake = sinon.stub(dashboard, 'find').throws(new Error('Internal server error occurred'));  
   const {statusCode} = await t.context.got(`dashboards/dashboards?token=${t.context.token}`);
-  t.is(statusCode, 404);
+  t.is(statusCode, 500);
   findFake.restore();
 });
 
@@ -65,7 +65,7 @@ test('POST /create-dashboard error handler', async (t) => {
   const findFake = sinon.stub(dashboard, 'findOne').throws(new Error('Internal server error occurred'));
   const dashboardJson = {json: {name: 'Test Dashboard',id: t.context.token}};
   const {statusCode} = await t.context.got.post(`dashboards/create-dashboard?token=${t.context.token}`,dashboardJson);
-  t.is(statusCode, 404);
+  t.is(statusCode, 500);
   findFake.restore();
 });
 
@@ -76,7 +76,7 @@ test('POST /delete-dashboard error handler', async (t) => {
   const findFake = sinon.stub(dashboard, 'findOneAndRemove').throws(new Error('Internal server error occurred'));
   const dashboardJson = {json: {name: 'Test Dashboard',id: t.context.token}};
   const {statusCode} = await t.context.got.post(`dashboards/delete-dashboard?token=${t.context.token}`,dashboardJson);
-  t.is(statusCode, 404);
+  t.is(statusCode, 500);
   findFake.restore();
 });
 
@@ -86,7 +86,7 @@ test('GET /dashboard error handler', async (t) => {
   // when called. Then replaces the original implementation of the find method with the fake implementation.
   const findFake = sinon.stub(dashboard, 'findOne').throws(new Error('Internal server error occurred'));  
   const {statusCode} = await t.context.got(`dashboards/dashboard?token=${t.context.token}`);
-  t.is(statusCode, 404);
+  t.is(statusCode, 500);
   findFake.restore();
 });
 
@@ -99,7 +99,7 @@ test('POST /save-dashboard error handler', async (t) => {
     // Send a POST request to the /save-dashboard route with the ID of the newly created dashboard
     const dashboardJson = {json: {name: 'Test Dashboard',id: t.context.token}};
     const {statusCode} = await t.context.got.post(`dashboards/save-dashboard?token=${t.context.token}`,dashboardJson);
-    t.is(statusCode, 404);
+    t.is(statusCode, 500);
 
     // Restore the original findFake method of the dashboard object
     findFake.restore();
@@ -114,7 +114,7 @@ test('POST /clone-dashboard error handler', async (t) => {
     // Send a POST request to the /save-dashboard route with the ID of the newly created dashboard
     const dashboardJson = {json: {name: 'Test Dashboard',id: t.context.token}};
     const {statusCode} = await t.context.got.post(`dashboards/clone-dashboard?token=${t.context.token}`,dashboardJson);
-    t.is(statusCode, 404);
+    t.is(statusCode, 500);
 
     // Restore the original findFake method of the dashboard object
     findFake.restore();
@@ -129,7 +129,7 @@ test('POST /check-password-needed error handler', async (t) => {
     // Send a POST request to the /save-dashboard route with the ID of the newly created dashboard
     const dashboardJson = {json: {name: 'Test Dashboard',id: t.context.token}};
     const {statusCode} = await t.context.got.post(`dashboards/check-password-needed?token=${t.context.token}`,dashboardJson);
-    t.is(statusCode, 404);
+    t.is(statusCode, 500);
 
     // Restore the original findFake method of the dashboard object
     findFake.restore();
@@ -144,7 +144,7 @@ test('POST /check-password error handler', async (t) => {
     // Send a POST request to the /save-dashboard route with the ID of the newly created dashboard
     const dashboardJson = {json: {name: 'Test Dashboard',id: t.context.token}};
     const {statusCode} = await t.context.got.post(`dashboards/check-password?token=${t.context.token}`,dashboardJson);
-    t.is(statusCode, 404);
+    t.is(statusCode, 500);
 
     // Restore the original findFake method of the dashboard object
     findFake.restore();
@@ -159,7 +159,7 @@ test('POST /share-dashboard error handler', async (t) => {
     // Send a POST request to the /save-dashboard route with the ID of the newly created dashboard
     const dashboardJson = {json: {name: 'Test Dashboard',id: t.context.token}};
     const {statusCode} = await t.context.got.post(`dashboards/share-dashboard?token=${t.context.token}`,dashboardJson);
-    t.is(statusCode, 404);
+    t.is(statusCode, 500);
 
     // Restore the original findFake method of the dashboard object
     findFake.restore();
@@ -174,7 +174,7 @@ test('POST /change-password error handler', async (t) => {
     // Send a POST request to the /save-dashboard route with the ID of the newly created dashboard
     const dashboardJson = {json: {name: 'Test Dashboard',id: t.context.token}};
     const {statusCode} = await t.context.got.post(`dashboards/change-password?token=${t.context.token}`,dashboardJson);
-    t.is(statusCode, 404);
+    t.is(statusCode, 500);
 
     // Restore the original findFake method of the dashboard object
     findFake.restore();
