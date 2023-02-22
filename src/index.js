@@ -1,57 +1,56 @@
-/*
-* Import path, .env, express, morgan, body-parser, helmet, compression, cors and middlewares, routes and config modules.
-*/
+// Import required modules
 const path = require('path');
-require('dotenv').config({path: path.join(__dirname, '../', '.env')});
 const express = require('express');
 const logger = require('morgan');
 const bodyParser = require('body-parser');
 const helmet = require('helmet');
 const compression = require('compression');
 const cors = require('cors');
+
+// Import custom modules
 const {error} = require('./middlewares');
 const routes = require('./routes');
 const {mongoose} = require('./config');
 
-/*
-* Initialize an app and make it so, it serves resources to a client from a different origin than the one the client is coming from,
-* set various HTTP headers to prevent common attacks and compress the body of the app, for configuration.
-*/
-const app = express();
-app.use(cors());
-app.use(helmet());
-app.use(compression());
+// Load environment variables from .env file
+require('dotenv').config({path: path.join(__dirname, '../', '.env')});
 
-/*
-* The logger middleware will only be used if the NODE_ENV is set to 'test', this allows to disable certain middleware functions when running tests
-* to avoid generating unnecessary output or modifying the request or response objects in unintended ways.
-* Then set the limit of json and urlencoded to 50mb and urlencoded extented to false.  
-*/ 
+// Create an instance of the express app
+const app = express();
+
+// Set up middleware functions
+app.use(cors()); // Allow cross-origin resource sharing
+app.use(helmet()); // Set various HTTP headers to prevent common attacks
+app.use(compression()); // Compress the response body
+
+// Use logger middleware only if NODE_ENV is not 'test'
 if (process.env.NODE_ENV !== 'test') {
   app.use(logger('dev'));
 }
+
+// Parse request body as JSON
 app.use(bodyParser.json({limit: '50mb'}));
+
+// Parse URL-encoded request body and set extended option to false
 app.use(bodyParser.urlencoded({limit: '50mb', extended: false}));
 
-// Mongo configuration
+// Connect to MongoDB
 mongoose();
 
-// Use routes.
+// Register routes
 app.use('/', routes);
 
-// Use the server static files.
+// Serve static files from the 'assets' directory
 app.use(express.static(path.join(__dirname, 'assets')));
 
-//Use the error handler.
+// Use error handling middleware
 app.use(error);
 
-// Set the port to .env or 3000
+// Start the server
 const port = process.env.PORT || 3000;
+app.listen(port, () => {
+  console.log(`NodeJS Server listening on port ${port}. \nMode: ${process.env.NODE_ENV}`);
+});
 
-// Listen to the port and print a text in the console.
-app.listen(port, () =>
-// eslint-disable-next-line no-console
-  console.log(`NodeJS Server listening on port ${port}. \nMode: ${process.env.NODE_ENV}`));
-
-// Export the app.
+// Export the app
 module.exports = app;
