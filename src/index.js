@@ -1,5 +1,8 @@
 // Import required modules
 const path = require('path');
+
+// Load environment variables from .env file
+require('dotenv').config({path: path.join(__dirname, '../', '.env')});
 const express = require('express');
 const logger = require('morgan');
 const bodyParser = require('body-parser');
@@ -11,9 +14,6 @@ const cors = require('cors');
 const {error} = require('./middlewares');
 const routes = require('./routes');
 const {mongoose} = require('./config');
-
-// Load environment variables from .env file
-require('dotenv').config({path: path.join(__dirname, '../', '.env')});
 
 // Create an instance of the express app
 const app = express();
