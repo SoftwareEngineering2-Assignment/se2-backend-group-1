@@ -1,11 +1,11 @@
 # This workflow will do a clean installation of the dependencies and builds the source code
-# Push will only be available at the branches 
+# Push will only be available at the branches, but when the merge happens on main it will run the cd part
 name: push
        
-on: push
+on: [push, pull_request]
 
 jobs:
-  push_actions: 
+  ci: 
     env:
       PORT: 3001
       SERVER_SECRET: ${{ secrets.SERVER_SECRET }}
@@ -28,3 +28,25 @@ jobs:
       # Runs all the tests serially
       - name: Run all the tests 
         run: npm test -- --serial
+
+  # This process requires CI to run first and runs on Ubuntu latest version.
+  # It uses appleboy and the secrets given in the repository.
+  # Finally goes to se2-backend clears any changes, pulls the latest changes made,
+  # installs the dependencies and restarts the backend server.
+  cd: 
+    runs-on: ubuntu-latest
+    needs: ci
+    if: github.ref == 'refs/heads/main' # Runs if the pull request is merged into the main branch
+    steps: 
+      - uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: ${{ secrets.SSH_PORT }}
+          script: | 
+            cd ~/se2/1/se2-backend
+            git reset --hard origin/main
+            git pull https://${{secrets.CLONE_TOKEN }}@github.com/SoftwareEngineering2-Assignment/se2-backend-group-1 main
+            bash -ci 'npm install'
+            bash -ci 'pm2 restart se2-backend-1'
