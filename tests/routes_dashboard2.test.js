@@ -64,6 +64,7 @@ test('POST /check-password dashboard invalid id', async t => {
     })
 });
 
+
 // Test /check-password with wrong password
 test('POST /check-password dashboard with wrong password', async t => {
     const dashboardJson = {json: {dashboardId: t.context.dashboard.id, password: ""}};
