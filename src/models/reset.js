@@ -1,4 +1,52 @@
 // Import dependencies
+
+
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+
+
+
+
+
+
 const mongoose = require('mongoose');
 const beautifyUnique = require('mongoose-beautiful-unique-validation');
 const {constants: {expires}} = require('../utilities/validation');
@@ -29,5 +77,5 @@ ResetSchema.plugin(beautifyUnique);
 // Disable pluralization of the collection name.
 mongoose.pluralize(null);
 
-// Export a Mongoose model based on reset tokens.
+// Export the ResetToken model
 module.exports = mongoose.model('reset-tokens', ResetSchema);
