@@ -1,8 +1,10 @@
-// Import required modules
+// Import path
 const path = require('path');
 
 // Load environment variables from .env file
 require('dotenv').config({path: path.join(__dirname, '../', '.env')});
+
+// Import required modules
 const express = require('express');
 const logger = require('morgan');
 const bodyParser = require('body-parser');
