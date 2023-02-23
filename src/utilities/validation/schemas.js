@@ -1,57 +1,58 @@
-/*
-* Import ramda, yup and constants.
-*/
-const {isNil} = require('ramda');
+// Import Ramda, Yup, and constants.
+const { isNil } = require('ramda');
 const yup = require('yup');
-const {min} = require('./constants');
+const { min } = require('./constants');
 
-/*
-* Make email string, lowercase, trimmed and email. Make username string and trimmed. 
-* Make password string, trimmed and ensure that password has at least min characters.
-*/
-const email = yup
+// Define common schema types for email, username, and password fields.
+const emailSchema = yup
   .string()
   .lowercase()
   .trim()
   .email();
 
-const username = yup
+const usernameSchema = yup
   .string()
   .trim();
 
-const password = yup
+const passwordSchema = yup
   .string()
   .trim()
   .min(min);
 
-/*
-* Make request with username required. Make authenticate with username and password required. Make register with username, email and password required.
-* Make update with username and password and check if one is not null. Make register schema, with password required.
-*/
-const request = yup.object().shape({username: username.required()});
+// Define request schema with a required username field.
+const requestSchema = yup.object().shape({username: usernameSchema.required()});
 
-const authenticate = yup.object().shape({
-  username: username.required(),
-  password: password.required()
+// Define authenticate schema with required username and password fields.
+const authenticateSchema = yup.object().shape({
+  username: usernameSchema.required(),
+  password: passwordSchema.required()
+});
+// Define register schema with required email, username, and password fields.
+const registerSchema = yup.object().shape({
+  email: emailSchema.required(),
+  password: passwordSchema.required(),
+  username: usernameSchema.required()
 });
 
-const register = yup.object().shape({
-  email: email.required(),
-  password: password.required(),
-  username: username.required()
-});
-
-const update = yup.object().shape({
-  username,
-  password
+// Define update schema with optional username and password fields, and a custom test to ensure that at least one of them is not null.
+const updateSchema = yup.object().shape({
+  username: usernameSchema,
+  password: passwordSchema,
 }).test({
   message: 'Missing parameters',
   test: ({username: u, password: p}) => !(isNil(u) && isNil(p))
 });
 
-const change = yup.object().shape({password: password.required()});
+// Define change schema with a required password field.
+const changeSchema = yup.object().shape({
+  password: passwordSchema.required(),
+});
 
-// Export authenticate, register, request, change and update.
+// Export schemas for request, authenticate, register, update, and change.
 module.exports = {
-  authenticate, register, request, change, update
+  authenticate: authenticateSchema,
+  register: registerSchema,
+  request: requestSchema,
+  change: changeSchema,
+  update: updateSchema,
 };
