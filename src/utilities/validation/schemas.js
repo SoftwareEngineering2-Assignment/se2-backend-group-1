@@ -1,14 +1,12 @@
-/*
-* Import ramda, yup and constants.
-*/
+
+// Import ramda, yup and constants.
 const {isNil} = require('ramda');
 const yup = require('yup');
 const {min} = require('./constants');
 
-/*
-* Make email string, lowercase, trimmed and email. Make username string and trimmed. 
-* Make password string, trimmed and ensure that password has at least min characters.
-*/
+
+//  Make email string, lowercase, trimmed and email. Make username string and trimmed. 
+//  Make pasword string, trimmed and ensure that password has at least min characters.
 const email = yup
   .string()
   .lowercase()
@@ -24,10 +22,9 @@ const password = yup
   .trim()
   .min(min);
 
-/*
-* Make request with username required. Make authenticate with username and password required. Make register with username, email and password required.
-* Make update with username and password and check if one is not null. Make register schema, with password required.
-*/
+
+// Make request with username required. Make authenticate with username and password required. Make register with username, email and password required.
+// Make update with username and password and check if one is not null. Make register schema, with password required.
 const request = yup.object().shape({username: username.required()});
 
 const authenticate = yup.object().shape({
