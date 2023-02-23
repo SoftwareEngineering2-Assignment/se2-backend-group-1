@@ -100,22 +100,6 @@ test('Test authorization if token is valid', (t) => {
   t.is(req.decoded.id, 1);
 });
 
-
-// test('Test authorization if token has expired', (t) => {
-//   const req = {
-//     query: { token: 'expired-token' },
-//     headers: {}
-//   };
-//   const res = {};
-//   const next = (error) => {
-//     t.is(error.message, 'TokenExpiredError');
-//     t.is(error.status, 401);
-//   };
-//   authorization(req, res, next);
-// });
-
-
-
 // Tests for middlewares/error
 test('Test error for when the error has status 500 or NODE_END is not production', (t) => {
   // Initialize the inputs of error and setting their status to 500
@@ -130,7 +114,6 @@ test('Test error for when the error has status 500 or NODE_END is not production
   process.env.NODE_ENV = 'development';
   error(errorObject, res);
 });
-
 
 // Tests for middlewares/validation
 test('Test validation when body is valid', async (t) => {
@@ -162,5 +145,3 @@ test('Test validation when no password', async (t) => {
   };
   await validation(req, res, next, 'register');
 });
-
-

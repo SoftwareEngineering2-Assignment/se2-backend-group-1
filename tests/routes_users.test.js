@@ -36,11 +36,6 @@ test('POST /create Create new user', async t => {
     t.is(statusCode, 200);
     t.assert(body.success);
     t.assert(body.id);
-
-    // Find the user with that name and password
-    // const user = await User.findOne({username: 'newuser'}).select('+password');
-    // t.assert(user);
-    // t.is(user.email, 'newuser@example.com');
 });
 
 // Test for /create for a user with an existing email
@@ -92,6 +87,7 @@ test('POST /authenticate password not match', async t => {
       });
 });
 
+//Test for /changepassword being correct
 test('POST /changepassword returns correct response and status code when password is expired', async (t) => {
     let user5;
     user5 = await User({username: 'newuser5',password: 'newpassword5', email: 'newuser5@example.com'}).save();
@@ -139,4 +135,3 @@ test('POST /resetpassword to reset password', async (t) => {
         message: 'Forgot password e-mail sent.'
       });
 });
-
