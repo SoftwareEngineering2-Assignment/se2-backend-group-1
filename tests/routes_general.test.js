@@ -64,19 +64,19 @@ test('GET /test-url-request with a GET request returns the correct response', as
 });
   
 test('GET /test-url-request with a POST request returns the correct response', async (t) => {
-    const {statusCode, body} = await t.context.got(`general/test-url-request?url=https://httpbin.org/post&type=POST`);
+    const {statusCode, body} = await t.context.got(`general/test-url-request?url=https://se2-frontend.netlify.app/&type=POST`);
     t.is(statusCode, 200);
     t.assert(body);
   });
 
 test('GET /test-url-request with a PUT request returns the correct response', async (t) => {
-    const {statusCode, body} = await t.context.got(`general/test-url-request?url=https://httpbin.org/put&type=PUT`);
+    const {statusCode, body} = await t.context.got(`general/test-url-request?url=https://se2-frontend.netlify.app/&type=PUT`);
     t.is(statusCode, 200);
     t.assert(body);
 });
 
 test('GET /test-url-request with an invalid request returns the correct response', async (t) => {
-    const {statusCode, body} = await t.context.got('general/test-url-request?url=https://se2-frontend-1.netlify.app&type=AA');
+    const {statusCode, body} = await t.context.got('general/test-url-request?url=https://se2-frontend.netlify.app/&type=AP');
     t.is(statusCode, 200);
     t.is(body.status, 500);
     t.assert(body);
