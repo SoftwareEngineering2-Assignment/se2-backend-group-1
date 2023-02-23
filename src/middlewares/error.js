@@ -19,7 +19,7 @@ const withFormatMessageForProduction = ifElse(
 * unmodified. If it does not, then a new object is created, which is a copy of the original object with the status property set to 500.
 * Then format the message and finally sends the modified error object as a JSON response to the client and send JSON-formatted error as the body.
 */
-module.exports = (error, req, res, next) => 
+module.exports = (error, res) => 
   /**
      * @name error
      * @description Middleware that handles errors

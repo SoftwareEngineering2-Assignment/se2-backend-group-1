@@ -61,7 +61,7 @@ test('GET /statistics error handler', async (t) => {
     // when called. Then replaces the original implementation of the find method with the fake implementation.
     const findStub = sinon.stub(Source , 'countDocuments').throws(new Error('Internal server error occurred'));  
     const {statusCode} = await t.context.got(`general/statistics`);
-    t.is(statusCode, 404);
+    t.is(statusCode, 500);
     findStub.restore();
 });
 
@@ -71,7 +71,7 @@ test('GET /sources error handler', async (t) => {
     // when called. Then replaces the original implementation of the find method with the fake implementation.
     const findStub = sinon.stub(Source, 'find').throws(new Error('Internal server error occurred'));  
     const {statusCode} = await t.context.got(`sources/sources?token=${t.context.token}`);
-    t.is(statusCode, 404);
+    t.is(statusCode, 500);
     findStub.restore();
 });
   
@@ -83,7 +83,7 @@ test('POST /create-source error handler', async (t) => {
     const sourceJson = {json: {name: "new Source", id: t.context.sourcesid}};
     const {statusCode} = await t.context.got.post(`sources/create-source?token=${t.context.token}`,sourceJson);
 
-    t.is(statusCode, 404);
+    t.is(statusCode, 500);
     findStub.restore();
 });
 
@@ -95,7 +95,7 @@ test('POST /change-source error handler', async (t) => {
     const sourceJson = {json: {name: "new Source", id: t.context.sourcesid}};
     const {statusCode} = await t.context.got.post(`sources/change-source?token=${t.context.token}`,sourceJson);
 
-    t.is(statusCode, 404);
+    t.is(statusCode, 500);
     findStub.restore();
 });
 
@@ -106,7 +106,7 @@ test('POST /delete-source error handler', async (t) => {
     const findStub = sinon.stub(Source, 'findOneAndRemove').throws(new Error('Internal server error occurred'));  
     const sourceJson = {json: {name: "new Source", id: t.context.sourcesid}};
     const {statusCode} = await t.context.got.post(`sources/delete-source?token=${t.context.token}`,sourceJson);
-    t.is(statusCode, 404);
+    t.is(statusCode, 500);
     findStub.restore();
 });
 
@@ -117,7 +117,7 @@ test('POST /source error handler', async (t) => {
     const findStub = sinon.stub(Source, 'findOne').throws(new Error('Internal server error occurred'));  
     const sourceJson = {json: {name: "new Source", id: t.context.sourcesid}};
     const {statusCode } = await t.context.got.post(`sources/source?token=${t.context.token}`,sourceJson);
-    t.is(statusCode, 404);
+    t.is(statusCode, 500);
     findStub.restore();
 });
 
@@ -129,7 +129,7 @@ test('POST /check-sources error handler', async (t) => {
     const sourceJson = {json: {name: "new Source", id: t.context.sourcesid}};
     const {statusCode } = await t.context.got.post(`sources/check-sources?token=${t.context.token}`,sourceJson);
 
-    t.is(statusCode, 404);
+    t.is(statusCode, 500);
     findStub.restore();
 });
 

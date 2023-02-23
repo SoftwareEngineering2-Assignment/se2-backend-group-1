@@ -18,18 +18,21 @@ jobs:
     steps:
     - run: |
         echo The PR was merged
+
   # If the pull request is approved it will print a message
   approved:
     if: github.event.review.state == 'approved'
     runs-on: ubuntu-latest
     steps:
       - run: echo "This PR was approved"
+
   # If the pull request is dismissed it will print a message    
   dismissed:
      if: github.event.review.state == 'dismissed'
      runs-on: ubuntu-latest
      steps:
        - run: echo "This PR was dismissed"
+       
   # If the pull request is edited it will print a message     
   edited:
      if: github.event.review.state == 'edited'
