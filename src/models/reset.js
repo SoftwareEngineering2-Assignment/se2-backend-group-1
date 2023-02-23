@@ -7,17 +7,17 @@ const {constants: {expires}} = require('../utilities/validation');
 const ResetSchema = new mongoose.Schema({
   username: {
     index: true, // Adds faster performance
-    type: String,
-    required: true,
+    type: String, // String type
+    required: true, // Make username required
     unique: 'A token already exists for that username!',
-    lowercase: true
+    lowercase: true // Make username lowercase
   },
   token: {
-    type: String,
-    required: true,
+    type: String, // String type
+    required: true, // Make username required
   },
   expireAt: {
-    type: Date,
+    type: Date, // Date type
     default: Date.now,
     index: { expires }, // Set a TTL index on the expireAt field to automatically delete expired tokens.
   },
