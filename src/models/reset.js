@@ -1,12 +1,18 @@
-// Import dependencies
+/*
+* Importing mongoose and a mongoose plugin for more user-friendly validation error messages when a unique constraint is violated and validation.
+*/
+/* eslint-disable func-names */
 const mongoose = require('mongoose');
 const beautifyUnique = require('mongoose-beautiful-unique-validation');
 const {constants: {expires}} = require('../utilities/validation');
 
-// Define a Mongoose schema for a reset token document.
+/*
+* Define a Mongoose schema for a reset token document. The fields are: username, token, and expiration date of the reset token. 
+* These fields have their specific parameters.
+*/
 const ResetSchema = new mongoose.Schema({
   username: {
-    index: true, // Adds faster performance
+    index: true,
     type: String,
     required: true,
     unique: 'A token already exists for that username!',
@@ -14,20 +20,20 @@ const ResetSchema = new mongoose.Schema({
   },
   token: {
     type: String,
-    required: true,
+    required: true
   },
   expireAt: {
     type: Date,
     default: Date.now,
-    index: { expires }, // Set a TTL index on the expireAt field to automatically delete expired tokens.
+    index: {expires},
   },
 });
 
-// Format unique constraint errors in a user-friendly way.
+// Make duplicate errors into regular Mongoose validation errors.
 ResetSchema.plugin(beautifyUnique);
 
-// Disable pluralization of the collection name.
+// Converts a singular word to its plural form. 
 mongoose.pluralize(null);
 
-// Export the ResetToken model
+// Export a Mongoose model based on reset tokens.
 module.exports = mongoose.model('reset-tokens', ResetSchema);
