@@ -115,7 +115,7 @@ test('Test error for when the error has status 500 or NODE_END is not production
   error(errorObject, res);
 });
 
-// Tests for middlewares/validation
+// Tests for middlewares/validation 
 test('Test validation when body is valid', async (t) => {
   const req = {body: {username: 'username',email: 'panos@gmail.com',password: 'password'}};
   const res = {};
